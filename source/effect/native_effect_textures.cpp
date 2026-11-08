@@ -365,7 +365,7 @@ struct NativeSourceTextureStartup::State {
           q.arguments[1] != ((size(i) + 31) & ~31u) || j.palette)
         return {};
       const auto a =
-          eventHeapAllocate(0, q.arguments[1], vm().memoryBinding.services());
+          vm().memoryBinding.allocateHeap(0, q.arguments[1]);
       if (!a)
         return 0;
       j.palette = a;

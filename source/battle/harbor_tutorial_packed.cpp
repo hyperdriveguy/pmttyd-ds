@@ -21,6 +21,7 @@
 #include "battle_action_help.hpp"
 #include "battle_action_feedback.hpp"
 #include "battle_packed_unit_initialization.hpp"
+#include "battle_unit_rotation_events.hpp"
 namespace ttyd {
 // Admitted packed accesses are required invariants: failure aborts rather than
 // returning fabricated zero. word/half/byte access goes through BE VM memory;
@@ -187,7 +188,7 @@ void HarborTutorialPacked::capture(HarborTutorial& scene){
  scene.battleFlags=word(Battle+0xef4);
  for(unsigned slot=0;slot<4;++slot){auto& a=slot?scene.actors[slot-1]:scene.systemActor;if(a.id<0 || a.id>3 || !registered[a.id])continue;const auto u=Units+uint32_t(a.id)*0x1000;
   uint16_t v=0;required(vm.memory.readHalf(u+0x10c,v));a.hp=int16_t(v);required(vm.memory.readHalf(u+0x108,v));a.maxHp=int16_t(v);
-  for(unsigned axis=0;axis<3;++axis){a.position[axis]=real(u+0x3c+4*axis);a.home[axis]=real(u+0x30+4*axis);}
+  for(unsigned axis=0;axis<3;++axis){a.position[axis]=real(u+0x3c+4*axis);a.home[axis]=real(u+0x30+4*axis);a.rotation[axis]=real(u+0x6c+4*axis);}
   for(unsigned i=0;i<16;++i)a.work[i]=int32_t(word(u+0x218+4*i));
   a.maxMoves=signByte(byte(u+0x21));a.wait=word(u+0x28c);a.phase=word(u+0x298);a.attack=word(u+0x2a0);a.confusion=word(u+0x2a4);a.damage=word(u+0x2b0);a.entry=word(u+0x2b8);
  }
@@ -248,6 +249,13 @@ bool HarborTutorialPacked::invoke(EventEntry& e,uint32_t function,int32_t first,
  // Whole source ClearAllStatus80105df8/58, reusing the complete existing
  // ClearStatus80127b58/54 + source Charge/change-info storage helpers.
  case 0x80105df8:{const auto args=e.arguments;const auto units=nativeBattleUnitEventServices(vm);const auto selector=units.values.resolve(units.values.user,e,int32_t(word(args)));const auto id=units.translate(units.user,e,selector);const auto u=units.unit(units.user,word(0x8041eb90),id);if(!u)return false;if(!initializePackedBattleUnitHelper(0x80127b58,u,nativeBattleActorServices(vm)))return false;result=2;return true;}
+ // Whole source camera priority-limit and unit rotation wrappers. Math is
+ // genuine VM platform work; no frame/readiness/render acknowledgement exists.
+ case 0x8012c0ac:result=battleCameraPriorityLimitEvent(e,nativeBattleUnitEventServices(vm));return true;
+ case 0x801115f8:case 0x80111720:{if(!vm.platform.fmodDouble || !vm.platform.roundDoubleFloat || !vm.platform.subtractDouble || !vm.platform.addFloat)return false;BattleUnitRotationEventServices services;services.units=nativeBattleUnitEventServices(vm);services.angle=marioJump;result=function==0x801115f8?battleAddUnitRotateEvent(e,services):battleSetUnitRotateEvent(e,services);return true;}
+ // Existing whole source nomove-Y wrapper; mask bit3 is the Y-axis lock.
+ case 0x8012b254:result=battleCameraAxisEvent(e,1u<<3,camera);return true;
+ case 0x8012b108:result=battleCameraOffsetEvent(e,camera);return true;
  case 0x8010436c:if(!inviteApReport())return false;result=2;return true;
  case 0x80139af4:result=2;return true; // Complete original li2/blr AP-recovery stub.
  case 0x80139898:packedBattleAudienceAcrobatNoTry(nativeBattleActorServices(vm));result=2;return true;

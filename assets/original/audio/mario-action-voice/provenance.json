@@ -1,0 +1,1010 @@
+{
+  "schema": 1,
+  "source": "US G8ME01 disc0 revision0, read-only",
+  "bank_provenance": {
+    "proj": {
+      "source_path": "sound/proj/pmario.proj",
+      "iso_offset": 1186607380,
+      "size": 28080,
+      "sha256": "f00a06f50bd9da5769f07fa751c2e4ae3731f3e0850236d62cd901c7f8eccdeb"
+    },
+    "pool": {
+      "source_path": "sound/proj/pmario.pool",
+      "iso_offset": 1186493388,
+      "size": 113992,
+      "sha256": "d0b12b497cee5718a5433285bdec8fcfe9b2dd25b1c1c0daa77ddb804cb7d1a0"
+    },
+    "sdir": {
+      "source_path": "sound/proj/pmario.sdir",
+      "iso_offset": 1197891540,
+      "size": 89788,
+      "sha256": "9529535398c5f7a839dd18f00c8e831957b26b5aab6a7bf83e5ee6acb5cb8496"
+    },
+    "samp": {
+      "source_path": "sound/proj/pmario.samp",
+      "iso_offset": 1186635460,
+      "size": 11256080,
+      "sha256": "062f7542e2f13f867ee30a447904b2b8af0ae8e4334ca39b7e1f4286d90833ea"
+    }
+  },
+  "original_sound_tables": [
+    {
+      "table": "bgm",
+      "address": 2150718152,
+      "size": 4192,
+      "sha256": "0bf7c0d076a1023aec640707a667e08b37a0980c391d83b9c603d4b4be76e346"
+    },
+    {
+      "table": "sfx",
+      "address": 2150722344,
+      "size": 84840,
+      "sha256": "42a9025dfc22cc47ac95e67bfb2d2fb5f460c1a12ea93e067e793daaaff1f683"
+    }
+  ],
+  "decoder_sha256": "4395534faa1b90b705903505bff1410a682a85c5188550e346e0e820f6ace522",
+  "importer_sha256": "358cf9a1b3314daf91c7ed0cf6fa21b63315629b7b24943ec0c43f4783e529e8",
+  "voices": [
+    {
+      "file": "mario-voice-ac1-1.wav",
+      "name": "SFX_VOICE_MARIO_AC1_1",
+      "source_table": "0x80416ae4",
+      "table_entry_iso_offset": 4080164,
+      "name_pointer": "0x802ee518",
+      "name_iso_offset": 3192856,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 165,
+        "address": 2150725644,
+        "name": "SFX_VOICE_MARIO_AC1_1",
+        "flags": 536871566,
+        "fx_id": 654,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 119,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 786,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          590
+        ],
+        "offset": 57752,
+        "size": 64
+      },
+      "sample_id": 590,
+      "encoded_sample": {
+        "iso_offset": 1193808388,
+        "size": 4472,
+        "sha256": "7bac3cadde1b300a15531bff36fa63e5edb9cec569c26dd3930371b01eb8c874"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 590,
+        "offset": 7172928,
+        "rate": 22050,
+        "samples": 7823,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "74e4d138498c7fdab0b910ef03496159a3a590e5b1300d82269af3842080cea5"
+    },
+    {
+      "file": "mario-voice-ac1-2.wav",
+      "name": "SFX_VOICE_MARIO_AC1_2",
+      "source_table": "0x80416ae4",
+      "table_entry_iso_offset": 4080168,
+      "name_pointer": "0x802ee530",
+      "name_iso_offset": 3192880,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 166,
+        "address": 2150725664,
+        "name": "SFX_VOICE_MARIO_AC1_2",
+        "flags": 536871567,
+        "fx_id": 655,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 112,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 787,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          591
+        ],
+        "offset": 57816,
+        "size": 64
+      },
+      "sample_id": 591,
+      "encoded_sample": {
+        "iso_offset": 1193812868,
+        "size": 4776,
+        "sha256": "dd23bdebcc83606a3561a202520e15e254a0871fac86f974a2d8691941b9bfdc"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 591,
+        "offset": 7177408,
+        "rate": 22050,
+        "samples": 8355,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "056c4d2c73af49d36b22cdb3cbdcac11c2e55fb14fcaea4b82266e0d4f88f450"
+    },
+    {
+      "file": "mario-voice-ac1-3.wav",
+      "name": "SFX_VOICE_MARIO_AC1_3",
+      "source_table": "0x80416ae4",
+      "table_entry_iso_offset": 4080172,
+      "name_pointer": "0x802ee548",
+      "name_iso_offset": 3192904,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 167,
+        "address": 2150725684,
+        "name": "SFX_VOICE_MARIO_AC1_3",
+        "flags": 536871568,
+        "fx_id": 656,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 122,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 788,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          592
+        ],
+        "offset": 57880,
+        "size": 64
+      },
+      "sample_id": 592,
+      "encoded_sample": {
+        "iso_offset": 1193817668,
+        "size": 5560,
+        "sha256": "2a2d505200e026f9f73772525692262b949a111613b7414991cd3d73b2816451"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 592,
+        "offset": 7182208,
+        "rate": 22050,
+        "samples": 9728,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "4da2e4a52ba8c7da36041bc16681ad9e6c442a6b2a1a6d40a1f1383551f8e9bd"
+    },
+    {
+      "file": "mario-voice-ac1-4.wav",
+      "name": "SFX_VOICE_MARIO_AC1_4",
+      "source_table": "0x80416ae4",
+      "table_entry_iso_offset": 4080176,
+      "name_pointer": "0x802ee560",
+      "name_iso_offset": 3192928,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 168,
+        "address": 2150725704,
+        "name": "SFX_VOICE_MARIO_AC1_4",
+        "flags": 536871569,
+        "fx_id": 657,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 122,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 789,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          593
+        ],
+        "offset": 57944,
+        "size": 64
+      },
+      "sample_id": 593,
+      "encoded_sample": {
+        "iso_offset": 1193823236,
+        "size": 2048,
+        "sha256": "cc108f727616831fbab42eadabb390e315a2bc3d04940c6562a5060986c7c9fe"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 593,
+        "offset": 7187776,
+        "rate": 22050,
+        "samples": 3575,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "bbf39154a98f287a85e13ee7e3a4b45ad911af659796ef553b05d720d448216b"
+    },
+    {
+      "file": "mario-voice-ac1-5.wav",
+      "name": "SFX_VOICE_MARIO_AC1_5",
+      "source_table": "0x80416ae4",
+      "table_entry_iso_offset": 4080180,
+      "name_pointer": "0x802ee578",
+      "name_iso_offset": 3192952,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 169,
+        "address": 2150725724,
+        "name": "SFX_VOICE_MARIO_AC1_5",
+        "flags": 536871570,
+        "fx_id": 658,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 122,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 790,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          594
+        ],
+        "offset": 58008,
+        "size": 64
+      },
+      "sample_id": 594,
+      "encoded_sample": {
+        "iso_offset": 1193825284,
+        "size": 6464,
+        "sha256": "c1364f2e08fae6e5a74dd234cc77e7504bc8e04673e98e6997bea1385bc3b96d"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 594,
+        "offset": 7189824,
+        "rate": 22050,
+        "samples": 11303,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "ba6c4dc576af7d61fccacfd8e43aeaa98ae20d6b8a3f497dbcb83d42a5bad542"
+    },
+    {
+      "file": "mario-voice-ac2-1.wav",
+      "name": "SFX_VOICE_MARIO_AC2_1",
+      "source_table": "0x80416af8",
+      "table_entry_iso_offset": 4080184,
+      "name_pointer": "0x802ee590",
+      "name_iso_offset": 3192976,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 171,
+        "address": 2150725764,
+        "name": "SFX_VOICE_MARIO_AC2_1",
+        "flags": 536871571,
+        "fx_id": 659,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 122,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 791,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          595
+        ],
+        "offset": 58072,
+        "size": 64
+      },
+      "sample_id": 595,
+      "encoded_sample": {
+        "iso_offset": 1193831748,
+        "size": 8024,
+        "sha256": "6680c0bff1b2168066ab7c179f795de62c9e9b9b9b410bb6ade5672fffbce01d"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 595,
+        "offset": 7196288,
+        "rate": 22050,
+        "samples": 14042,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "58a4315ff2658c904dab17ecf44fd496c148071d970c996405a5a88817fc9d15"
+    },
+    {
+      "file": "mario-voice-ac2-2.wav",
+      "name": "SFX_VOICE_MARIO_AC2_2",
+      "source_table": "0x80416af8",
+      "table_entry_iso_offset": 4080188,
+      "name_pointer": "0x802ee5a8",
+      "name_iso_offset": 3193000,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 172,
+        "address": 2150725784,
+        "name": "SFX_VOICE_MARIO_AC2_2",
+        "flags": 536871572,
+        "fx_id": 660,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 122,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 792,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          596
+        ],
+        "offset": 58136,
+        "size": 64
+      },
+      "sample_id": 596,
+      "encoded_sample": {
+        "iso_offset": 1193839780,
+        "size": 8184,
+        "sha256": "b346c77df821ac1f9e66d03ce98b1672e3e9d1e37d3e601601a66eb406893907"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 596,
+        "offset": 7204320,
+        "rate": 22050,
+        "samples": 14313,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "6b7ece1171dc2257243533273db7b6d8bbb2abad1f7e408d731591edeb0ee270"
+    },
+    {
+      "file": "mario-voice-ac2-3.wav",
+      "name": "SFX_VOICE_MARIO_AC2_3",
+      "source_table": "0x80416af8",
+      "table_entry_iso_offset": 4080192,
+      "name_pointer": "0x802ee5c0",
+      "name_iso_offset": 3193024,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 173,
+        "address": 2150725804,
+        "name": "SFX_VOICE_MARIO_AC2_3",
+        "flags": 536871573,
+        "fx_id": 661,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 117,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 793,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          597
+        ],
+        "offset": 58200,
+        "size": 64
+      },
+      "sample_id": 597,
+      "encoded_sample": {
+        "iso_offset": 1193847972,
+        "size": 8864,
+        "sha256": "7c467b5461fe983bd89848b33acaf9a4781542a3423c1fca5541501eed96f180"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 597,
+        "offset": 7212512,
+        "rate": 22050,
+        "samples": 15503,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "84e057de461c28573f64467fc60b1ca9024cf297dee5c929c180dc7bd6d86350"
+    },
+    {
+      "file": "mario-voice-ac2-4.wav",
+      "name": "SFX_VOICE_MARIO_AC2_4",
+      "source_table": "0x80416af8",
+      "table_entry_iso_offset": 4080196,
+      "name_pointer": "0x802ee5d8",
+      "name_iso_offset": 3193048,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 174,
+        "address": 2150725824,
+        "name": "SFX_VOICE_MARIO_AC2_4",
+        "flags": 536871574,
+        "fx_id": 662,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 112,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 794,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          598
+        ],
+        "offset": 58264,
+        "size": 64
+      },
+      "sample_id": 598,
+      "encoded_sample": {
+        "iso_offset": 1193856836,
+        "size": 8576,
+        "sha256": "890c3c23a21bf010fccafbe2506365034dc2ae79a865c3ed86f8ad24d29b508c"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 598,
+        "offset": 7221376,
+        "rate": 22050,
+        "samples": 14996,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "285b6d7352786b44a8f9a3b2eeb5419c9de4065e952dc40b838bd4294f1e7bb7"
+    },
+    {
+      "file": "mario-voice-ac2-5.wav",
+      "name": "SFX_VOICE_MARIO_AC2_5",
+      "source_table": "0x80416af8",
+      "table_entry_iso_offset": 4080200,
+      "name_pointer": "0x802ee5f0",
+      "name_iso_offset": 3193072,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 175,
+        "address": 2150725844,
+        "name": "SFX_VOICE_MARIO_AC2_5",
+        "flags": 536871575,
+        "fx_id": 663,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 117,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 795,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          599
+        ],
+        "offset": 58328,
+        "size": 64
+      },
+      "sample_id": 599,
+      "encoded_sample": {
+        "iso_offset": 1193865412,
+        "size": 9976,
+        "sha256": "6b580c940bec6025ab3b56bdb58f6b02d37ff013c1319c17841c34480bfa89fd"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 599,
+        "offset": 7229952,
+        "rate": 22050,
+        "samples": 17458,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "0558622c47dce56ff31ac65b3abbdeca6a27b5f910f6f858d3cbca94bc14c251"
+    },
+    {
+      "file": "mario-voice-ac3-1.wav",
+      "name": "SFX_VOICE_MARIO_AC3_1",
+      "source_table": "0x80416ad0",
+      "table_entry_iso_offset": 4080144,
+      "name_pointer": "0x802ee4a0",
+      "name_iso_offset": 3192736,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 177,
+        "address": 2150725884,
+        "name": "SFX_VOICE_MARIO_AC3_1",
+        "flags": 536871576,
+        "fx_id": 664,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 117,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 796,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          600
+        ],
+        "offset": 58392,
+        "size": 64
+      },
+      "sample_id": 600,
+      "encoded_sample": {
+        "iso_offset": 1193875396,
+        "size": 9136,
+        "sha256": "c8aad07674fb533a1cbdb07ecfd78406983e7ed4f35cdd80481a86c19271b979"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 600,
+        "offset": 7239936,
+        "rate": 22050,
+        "samples": 15984,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "94db487ff94ec2a4ff45193be01143a9d505e8932e742b5593f9b99595690552"
+    },
+    {
+      "file": "mario-voice-ac3-2.wav",
+      "name": "SFX_VOICE_MARIO_AC3_2",
+      "source_table": "0x80416ad0",
+      "table_entry_iso_offset": 4080148,
+      "name_pointer": "0x802ee4b8",
+      "name_iso_offset": 3192760,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 178,
+        "address": 2150725904,
+        "name": "SFX_VOICE_MARIO_AC3_2",
+        "flags": 536871577,
+        "fx_id": 665,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 117,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 797,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          601
+        ],
+        "offset": 58456,
+        "size": 64
+      },
+      "sample_id": 601,
+      "encoded_sample": {
+        "iso_offset": 1193884548,
+        "size": 11408,
+        "sha256": "0c2f2391cd392641cdb21d532f71b0771dff138a88369d8c82ff64f747592405"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 601,
+        "offset": 7249088,
+        "rate": 22050,
+        "samples": 19963,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "b077422b6b9347460ac8a2d3f5358e57fbf6b8bf786fdf661ca18e9648bbce22"
+    },
+    {
+      "file": "mario-voice-ac3-3.wav",
+      "name": "SFX_VOICE_MARIO_AC3_3",
+      "source_table": "0x80416ad0",
+      "table_entry_iso_offset": 4080152,
+      "name_pointer": "0x802ee4d0",
+      "name_iso_offset": 3192784,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 179,
+        "address": 2150725924,
+        "name": "SFX_VOICE_MARIO_AC3_3",
+        "flags": 536871578,
+        "fx_id": 666,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 117,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 798,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          602
+        ],
+        "offset": 58520,
+        "size": 64
+      },
+      "sample_id": 602,
+      "encoded_sample": {
+        "iso_offset": 1193895972,
+        "size": 9800,
+        "sha256": "f3f7940aa3ac0dcd946928c4263b6e52dabf8543373b227c4a98cf649b6542cd"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 602,
+        "offset": 7260512,
+        "rate": 22050,
+        "samples": 17144,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "521862dd13031ce24e8f8d7319efc45e893cea6cce395e8c82df8e02de39a1a7"
+    },
+    {
+      "file": "mario-voice-ac3-4.wav",
+      "name": "SFX_VOICE_MARIO_AC3_4",
+      "source_table": "0x80416ad0",
+      "table_entry_iso_offset": 4080156,
+      "name_pointer": "0x802ee4e8",
+      "name_iso_offset": 3192808,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 180,
+        "address": 2150725944,
+        "name": "SFX_VOICE_MARIO_AC3_4",
+        "flags": 536871579,
+        "fx_id": 667,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 117,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 799,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          603
+        ],
+        "offset": 58584,
+        "size": 64
+      },
+      "sample_id": 603,
+      "encoded_sample": {
+        "iso_offset": 1193905796,
+        "size": 14008,
+        "sha256": "70a3fde033e131d890b03344db5d903f82679d7bc3f9567e2a305e0dfff39fbd"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 603,
+        "offset": 7270336,
+        "rate": 22050,
+        "samples": 24508,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "5cc4b620a9761a542f19dbb6d2229dd59bbc8adf5bbcf1ac91f7811ecf177bd2"
+    },
+    {
+      "file": "mario-voice-ac3-5.wav",
+      "name": "SFX_VOICE_MARIO_AC3_5",
+      "source_table": "0x80416ad0",
+      "table_entry_iso_offset": 4080160,
+      "name_pointer": "0x802ee500",
+      "name_iso_offset": 3192832,
+      "row": {
+        "platform": "gamecube",
+        "table": "sfx",
+        "table_index": 181,
+        "address": 2150725964,
+        "name": "SFX_VOICE_MARIO_AC3_5",
+        "flags": 536871580,
+        "fx_id": 668,
+        "stream_alias": "",
+        "category": "field-character",
+        "trigger_evidence": "name category only; event condition and ordering require original caller binding",
+        "parameters": {
+          "volume": 119,
+          "pan": 64,
+          "flags": 0,
+          "mode": 1,
+          "priority": 0,
+          "delay": 0,
+          "variation_high": 0,
+          "variation_low": 0
+        }
+      },
+      "effect": {
+        "group_id": 5,
+        "object_id": 800,
+        "priority": 1,
+        "voices": 10,
+        "velocity": 127,
+        "pan": 64,
+        "key": 60
+      },
+      "macro": {
+        "sample_ids": [
+          604
+        ],
+        "offset": 58648,
+        "size": 64
+      },
+      "sample_id": 604,
+      "encoded_sample": {
+        "iso_offset": 1193919812,
+        "size": 8600,
+        "sha256": "9f3c2821c8bb798e962c80ee7084af0abf5225c61ace930186c0ab1b71047cd5"
+      },
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "pcm": {
+        "id": 604,
+        "offset": 7284352,
+        "rate": 22050,
+        "samples": 15044,
+        "loop": null,
+        "channels": 1,
+        "loop_enabled": false,
+        "conversion": "MusyX DSP ADPCM to PCM16; original rate and sample ID retained"
+      },
+      "pcm_sha256": "194dcfa3ac4c7100bb9b351c7603208b167d32df2a2773257a9638fb59615ee0"
+    }
+  ],
+  "conversion": "Original-rate mono PCM16 decode of the single primary DSP ADPCM sample per original voice effect. No normalization/resampling/tone generation. MusyX pitch/envelope/delay/spatial macro behavior is not reproduced.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

@@ -44,6 +44,7 @@ bool Renderer::bindTutorialStartupResources(HarborTutorial& tutorial){
 // Unbind event callbacks before releasing their resource owner. GPU sync then
 // retires all nine descriptor/texture pairs; copying Texture does not clone it.
 void Renderer::releaseTutorialStartupResources(){
+    retireNativeHarborNice();
     if(tutorialStartupOwner){tutorialStartupOwner->setStartupResources(nullptr,nullptr,nullptr);tutorialStartupOwner=nullptr;}
     if(c3dReady)C3D_FrameSync();
     for(unsigned i=0;i<9;++i){

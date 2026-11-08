@@ -15,5 +15,8 @@ struct EventMemoryBinding {
     // mapped domains (assert policy), not optional retries; callers must not treat
     // disabled assertions as a supported missing-memory fallback.
     EventMemoryServices services();
+    // Native heap adapter: retain source allocation/store/flush ordering while
+    // borrowing stable RAM only during the closed memory-only clear.
+    uint32_t allocateHeap(int32_t heapIndex,uint32_t bytes);
 };
 }

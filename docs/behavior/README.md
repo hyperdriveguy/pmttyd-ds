@@ -865,6 +865,7 @@ Opening audio: [original house sound requests and native PCM](audio/NATIVE_OPENI
 
 - [Tutorial ordinary Crump impact](battle/TUTORIAL_ORDINARY_CRUMP_IMPACT.md)
 - [Native manual Harbor tutorial gameplay policy](battle/NATIVE_HARBOR_TUTORIAL_GAMEPLAY.md)
+- [Native physical Harbor Stylish window](battle/NATIVE_HARBOR_STYLISH_WINDOW.md).
 
 - [Original item95 registry/icon](field/ITEM95_ENTRY_NAME_REGISTRY_AND_ICON_DRAW.md), [map blend/shadow admission](display/ITEM95_ICON_MAP_BLEND_AND_SHADOW_ADMISSION.md), [native parcel icon provider](display/NATIVE_ITEM95_REGISTRY_AND_ICON.md), and [original fanfare/BGM queries](audio/FIELD_ITEM95_FANFARE_BGM_ROUTING_AND_QUERIES.md).
 
@@ -1372,6 +1373,8 @@ Original retained battle UI text controllers:
 - [Weapon help parser](display/RETAINED_WEAPON_HELP_PARSER.md).
 - [Matrix font](display/RETAINED_MATRIX_FONT_RASTER.md).
 - [Native manual Harbor command menu](display/NATIVE_HARBOR_COMMAND_MENU.md).
+- [Original native Harbor success feedback](display/NATIVE_HARBOR_NICE_EFFECTS.md).
+- [Native heap clear borrowing](event/NATIVE_HEAP_BORROW.md).
 - [Scalar font](display/RETAINED_SCALAR_FONT.md).
 - [Shared font state](display/RETAINED_SHARED_FONT_STATE.md).
 
@@ -1518,6 +1521,7 @@ Original battle menu native resource/queue owners:
 | [Cold storage](battle/BATTLE_COLD_STORAGE.md) | Nine original storage/reset bodies | Full cold/native battle initialization |
 | [Retained battle voice and public pending sound](audio/RETAINED_BATTLE_VOICE_AND_PUBLIC_PENDING_SOUND.md) | Original voice/menu public On and real pending-slot ownership | Audible macro/voice service |
 | [Native battle public-slot retirement](audio/NATIVE_BATTLE_SOUND_SLOT_RETIREMENT.md) | Actual On/Off/init incarnation metadata and owned native teardown | Separate music/backend/field completion |
+| [Native Harbor completion policy](battle/NATIVE_HARBOR_COMPLETION_POLICY.md) | Actual pouch/event/menu/audio teardown and unchanged result receipt | Original End/field wait remain separate |
 
 - [Harbor source lethal damage](battle/HARBOR_SOURCE_LETHAL_DAMAGE.md): actual ordinary lethal admission and retained source death leaves.
 - [Harbor source death rotation and camera](battle/HARBOR_SOURCE_DEATH_ROTATION_CAMERA.md): whole original event wrappers and exact source math providers.
@@ -1562,3 +1566,5 @@ retain explicit provider and process-ownership frontiers.
 
 
 - [Original fade startup texture owner](display/SOURCE_FADE_TEXTURE_STARTUP.md): actual heap manager initialization, retained texture setup/callback and normal activation frontier.
+
+- [Native Mario action-voice PCM](audio/NATIVE_MARIO_ACTION_VOICE_PCM.md): finite original primary samples, actual source-bank birth ownership, real NDSP retirement and explicit macro/spatial limits.

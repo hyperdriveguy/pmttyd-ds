@@ -1543,7 +1543,12 @@ const char* Game::dialogue() const {
     return dialogueKind == 1 ? encounter[dialoguePage] : notices[dialoguePage];
 }
 const char* Game::prompt() const {
-    if(harborTutorial.running())return harborTutorial.failed?"Development notice: original tutorial initialization unavailable":harborTutorial.introComplete?"Development notice: original tutorial action services pending":harborTutorial.message.waiting()?"A / B: next":"A / B: reveal text";
+    if(harborTutorial.running()) {
+        if(harborTutorial.failed)return "Development notice: original tutorial initialization unavailable";
+        if(harborTutorial.message.active())return harborTutorial.message.waiting()?"A / B: next":"A / B: reveal text";
+        if(harborTutorial.classMenuOpen || harborTutorial.weaponMenuOpen || harborTutorial.weaponTargetMenuOpen)return "Circle Pad / D-pad: choose   A: confirm   B: back";
+        return harborTutorial.introComplete?"A: action command / guard":"";
+    }
     if(saveObjects && saveObjects->failed)return "Development notice: save service unavailable";
     if(saveLocked())return saveObjects->presentation.selection.active()?"A: select     B: cancel":"A / B: next";
     if(harborEncounter.locked())return harborEncounter.failed?"Development notice: source encounter unavailable":harborEncounter.battleRequested?"Development notice: original tutorial battle service pending":harborEncounter.message.waiting()?"A / B: next":"A / B: reveal text";
@@ -2531,7 +2536,10 @@ void Game::tick(const Input& rawInput,const OriginalSequenceServices* sequenceSe
     }
     if(harborTutorial.running()) {
         const auto physical=inputProducer.channels[0].battleSample();
-        harborGameplay.advance(harborTutorial,ticks,ticks*1000/60,(i.confirm || tap?0x100u:0u)|(i.cancel?0x200u:0u),rawInput.physicalSnapshot?&physical:nullptr);
+        const uint32_t messageKeys=rawInput.physicalSnapshot?
+            physical.pressed&(BattleButtonA|BattleButtonB):
+            (i.confirm || tap?BattleButtonA:0u)|(i.cancel?BattleButtonB:0u);
+        harborGameplay.advance(harborTutorial,ticks,ticks*1000/60,messageKeys,rawInput.physicalSnapshot?&physical:nullptr);
         scene=Scene::Battle;saveRequested=false;return;
     }
     if(progress.room==1 && progress.originalStory==4 && !harborEncounter.triggered)beginHarborEncounter(harborResume);

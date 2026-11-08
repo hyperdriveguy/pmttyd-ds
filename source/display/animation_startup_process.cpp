@@ -80,7 +80,7 @@ bool AnimationStartupProcess::child(BattleSequenceCall& c){
  // including real zero-fill/cache services; no invented bump-pointer result.
  case 0x800300f0:
   if(c.args[0]!=0)return false;
-  c.result=eventHeapAllocate(0,c.args[1],vm_->memoryBinding.services());return true;
+  c.result=vm_->memoryBinding.allocateHeap(0,c.args[1]);return true;
  case 0x8018a61c:{
   // The two cold literal-only vsprintf requests need no varargs conversion.
   // The cache exposes the actual source shared filename at803e6e78. Generic

@@ -19827,3 +19827,42 @@ source fileFree8008749c. Fresh read-only captures/source hashes and exact next
 frontier are under artifacts/fade-startup/. Whole source startup, Crump fresh/
 resume into/out-of-battle round trips and physical New2DS XL performance remain
 incomplete; the full goal stays active.
+### Crump physical feedback and original action voices checkpoint (2026-11-07)
+
+Added original-bank Nice feedback, physical Stylish timing and the actual reached
+fatal rotation/camera leaves to the native Harbor driver. The original command
+menus, original HUD artwork, lower-screen scene/audience continuation and physical
+controls remain. Physical A/B message edges now reach the message service, and
+the command-stage regression verifies actual driver/menu state instead of the old
+stub notice. Native heap borrowing preserves original allocation/clear/flush
+operations while avoiding redundant cold ownership checks during original startup.
+
+Imported 15 original Mario action-command primary samples from the read-only ISO
+into a new tracked destination with per-asset provenance/rights. Native PCM playback
+uses actual public sound-bank incarnation ownership and real NDSP completion;
+retirement stops owned voices/music and latches the actual retired runtime so the
+main loop cannot restart it. This is finite primary-sample playback, not complete
+MusyX macro, pitch/envelope or spatial behavior. Added the retained completion owner
+and exact source result1 admission policy; production victory/field return is still
+pending, and no default result0 is promoted to success.
+
+Validation: artifacts/crump-voice-integration/results.json pins frozen manifest
+7d9842570b4d3593b068fe112cc1c479f2296285654a537fe57f86c76941955e,
+15654 unchanged inputs. make test exits0:616/616 C++ in76.11s and270/270 Python
+in39.807s, no skips. make all exits0, SOUNDTRACK=gamecube, after normal
+assets-ready:465 editable recipes and510 original editable sources unchanged.
+3DSX SHA256:17317d27b830c9228cf371dbb2928a50c800570b76186d9109cf7c24d0ba7318.
+Documentation links:1706 files, zero broken. This coherent graph starts at bb6a7c4;
+concurrent environment/fade startup commits are not covered by these receipts.
+The earlier615-test graph failed only its obsolete stub-prompt assertion; its
+native gate passed. The corrected descendant above is the acceptance authority.
+
+Isolated Azahar diagnostics reach original harbor art and confirm physical controls
+and simulation advancement. They have not yet demonstrated a full Crump round
+trip, on-device audio or target-hardware performance. Actual lethal-source host
+work reaches the original kemuri_test type4 effect; its next implementation and
+same-VM sailor construction/field start-wait-return composition remain separate.
+Next: integrate those exact source leaves, bind actual presentation/audio teardown
+to the native field sequence owner, and verify fresh/resumed original dialogue,
+physical command selection, damage, victory and field return in the emulator.
+The full tutorial/battle deliverable remains unfinished and the goal stays active.

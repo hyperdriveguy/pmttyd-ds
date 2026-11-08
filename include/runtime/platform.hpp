@@ -92,6 +92,7 @@ public:
     bool drawClassMenu(const BattleClassBackend&);
     const BattleClassAssets* classMenuAssets();
     void retireNativeHarborMenu();
+    void retireNativeHarborNice();
     // Ready-only accessor: never imports during a held native callback.
     std::optional<BattleClassSurfaceLease> classMenuSurfaceLease()const;
     // Explicit preparation outside FrameBegin; source callbacks borrow leases.
@@ -303,6 +304,9 @@ private:
     std::unique_ptr<BattleStartupResources> tutorialStartupResources;
     std::array<Texture,9> tutorialStartupTextures;
     HarborTutorial* tutorialStartupOwner=nullptr;
+    struct NativeHarborNice;std::shared_ptr<NativeHarborNice> nativeHarborNice;
+    bool prepareNativeHarborNice(Game&);
+    void drawNativeHarborNice(const Game&,bool lower);
     struct Occluder {Bounds3 bounds{};std::vector<uint32_t> batches;uint64_t hiddenUntil=0;bool hidden=false;};
     // One bank/texture per model plus retained CPU sample. tick=UINT64_MAX,
     // frame=-1 invalidate the cache;key also includes pose name and sample time.
@@ -566,6 +570,10 @@ public:
     void updateFrontend(const OpeningDemo&,bool enabled);
     void updateFrontend(const OpeningTitle&,bool enabled);
     bool updateOpeningHousePcm(const OpeningHouseSounds*,bool enabled);
+    // Actual primary-sample NDSP owner retirement, not source psndMain/End.
+    bool retireHarborVoicePcm(const std::shared_ptr<const void>& actualRuntime);
+    bool retireHarborBattleAudio(const std::shared_ptr<const void>& actualRuntime);
+    bool harborBattleAudioRetired(const std::shared_ptr<const void>& actualRuntime) const;
     void updateFrontend(const OpeningSequence&,bool enabled);
     void shutdown();
     bool available() const { return ready; }
@@ -590,6 +598,9 @@ private:
     FieldSfxNdsp fieldSfxBackend;Game* fieldMarioOwner=nullptr;
     bool ready=false,titleResourceAttempted=false,titleResourceReady=false;
     OpeningHousePcmPlayer openingHousePcm;
+    struct HarborVoicePcmState;std::shared_ptr<HarborVoicePcmState> harborVoicePcm;
+    void updateHarborVoicePcm(const Game&);
+    void stopHarborVoicePcm();void releaseHarborVoicePcm();
     struct Clip { int16_t* data=nullptr; uint32_t samples=0; ndspWaveBuf wave{}; };
     std::array<Clip,4> troubleClips{}; // Original rows5/19/42/43 on NDSP20..23; row18 borrows clip0/channel2.
     // Eight primary-sample cues reside on native NDSP channels2..9;opening

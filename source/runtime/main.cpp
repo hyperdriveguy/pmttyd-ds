@@ -263,7 +263,7 @@ int main() {
             ++metrics.steps;accumulator-=1./60;
             pending={};pending.x=i.x;pending.z=i.z;pending.jumpHeld=i.jumpHeld;pending.cancelHeld=i.cancelHeld;
             pending.physicalSnapshot=i.physicalSnapshot;pending.physicalButtons=i.physicalButtons;
-            if(frontend.screen==ttyd::FrontScreen::Playing && game.progress.sound) audio.play(game);
+            if(frontend.screen==ttyd::FrontScreen::Playing) audio.play(game); // Lifecycle/muted PCM still serviced; effects remain gated inside Audio.
             game.troubleBoardSounds.clear(); // Consume once per native audio visit, including muted/unavailable playback.
             if(noticeTicks>0)--noticeTicks;
             if(frontend.screen==ttyd::FrontScreen::Playing && game.nativeAnimationPending())break;
@@ -322,7 +322,10 @@ int main() {
             notice=ok?"Progress loaded":"Save unavailable";noticeTicks=180;
             accumulator=0;pending={};previous=seconds();
         }
-        if(frontend.screen==ttyd::FrontScreen::Playing && game.harborTutorial.running())audio.updateFrontend(12,game.progress.sound);
+        if(frontend.screen==ttyd::FrontScreen::Playing && game.harborTutorial.running()) {
+            if(!audio.harborBattleAudioRetired(game.harborTutorial.nativeGameplayLifetime().lock()))
+                audio.updateFrontend(12,game.progress.sound);
+        }
         else if(frontend.screen==ttyd::FrontScreen::Playing)audio.update(game.trioBattleActive?(game.trioAttack.rewardPresentationActive()?ttyd::Scene::Victory:ttyd::Scene::Battle):game.scene,game.progress.sound,game.harborStory.enabled && game.harborStory.triggered,
                      game.professorStory.locked() && !game.trioBattleActive?game.professorStory.music:0,game.progress.room,
                      game.trioBattleActive?(game.trioCommands.state==ttyd::TrioBattleCommands::State::Command || game.trioCommands.state==ttyd::TrioBattleCommands::State::Target):game.phase==ttyd::Phase::Select);

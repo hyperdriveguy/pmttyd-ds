@@ -68,7 +68,7 @@ struct NativeSourceIconProcess::State:std::enable_shared_from_this<State>{
   s.stringBudget=s.outputCapacity=PrivatePathCapacity;return formatter.bind(std::move(s));
  }
  std::optional<uint32_t>allocate(const SourceIconSetupCall&q){if(q.count!=2||q.arguments[0])return {};
-  auto at=heaps.find(q.callsite);if(at==heaps.end()){Heap h;h.size=q.arguments[1];h.base=eventHeapAllocate(0,h.size,vm().memoryBinding.services());++count.allocations;if(!h.base)return 0;h.bytes=std::make_shared<std::vector<uint8_t>>();at=heaps.emplace(q.callsite,std::move(h)).first;}
+  auto at=heaps.find(q.callsite);if(at==heaps.end()){Heap h;h.size=q.arguments[1];h.base=vm().memoryBinding.allocateHeap(0,h.size);++count.allocations;if(!h.base)return 0;h.bytes=std::make_shared<std::vector<uint8_t>>();at=heaps.emplace(q.callsite,std::move(h)).first;}
   auto&h=at->second;if(h.size!=q.arguments[1])return {};if(h.adopted)return h.base;
   if(!gate(NativeSourceIconBoundary::HeapTransfer,h.base,h.size))return {};
   if(!h.detached){if(!vm().memory.extractRam(h.base,h.size,*h.bytes))return {};h.detached=true;}
@@ -89,7 +89,15 @@ struct NativeSourceIconProcess::State:std::enable_shared_from_this<State>{
   case 0x8026a0b8:destination=q.destination;return formatter.request(q);
   case 0x800300f0:return allocate(q);
   case 0x800050b4:{if(q.count!=3||q.arguments[1])return {};auto at=std::find_if(heaps.begin(),heaps.end(),[&](const auto&v){return v.second.base==q.arguments[0]&&v.second.adopted&&q.arguments[2]<=v.second.size;});if(at==heaps.end())return {};
-   const auto result=eventFillMemory(q.arguments[0],0,q.arguments[2],vm().memoryBinding.services());if(!current())return {};for(uint32_t i=0;i<q.arguments[2];++i)if(memory->byte(q.arguments[0]+i)!=0)return {};++count.clears;return result;}
+   uint32_t result=0;const uint32_t address=q.arguments[0],bytes=q.arguments[2];
+   const auto&backing=*at->second.bytes;
+   const bool cleared=vm().memory.withRawRamAccess([&](auto&ram){
+    if(bytes&&!ram.matchesBacking(address,bytes,backing.data()))return false;
+    result=eventFillMemory(address,0,bytes,vm().memoryBinding.services());
+    return std::all_of(backing.begin(),backing.begin()+bytes,[](uint8_t value){return value==0;});
+   });
+   if(!cleared||!current())return {};
+   ++count.clears;return result;}
   case 0x80144e88:return open(q);
   case 0x80144dcc:{if(q.count!=1)return {};auto e=entries.find(q.arguments[0]);if(e==entries.end()||!entryCurrent(*e->second))return {};return get(e->second->bytes,DvdLogicalLength,4);}
   case 0x80144de4:{if(q.count!=5||q.arguments[3])return {};auto e=entries.find(q.arguments[0]);if(e==entries.end()||!entryCurrent(*e->second))return {};auto&entry=*e->second;

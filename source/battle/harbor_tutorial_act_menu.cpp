@@ -10,6 +10,11 @@ namespace ttyd {
 // Release only this adapter's actual SDK class allocations (heap 0). Reject
 // unknown/stale addresses; erase lifetime identity before freeing. The fixed
 // legacy weapon projection at MenuRam+0xc00 is the explicitly separate exception.
+bool HarborTutorialPacked::retireNativeClassUi(){
+ while(!classUiAllocations.empty())if(!classUiRelease(*classUiAllocations.begin()))return false;
+ nativeWeaponPresentationOwner.reset();
+ return true;
+}
 bool HarborTutorialPacked::classUiRelease(uint32_t address) {
   // The legacy weapon UI owns a fixed projection, not an SDK allocation.
   if (address == MenuRam + 0xc00)

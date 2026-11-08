@@ -139,7 +139,7 @@ struct NativeUiStartup::State:std::enable_shared_from_this<NativeUiStartup::Stat
  std::optional<uint32_t>windowAllocate(const SourceWindowTextureSetupCall&q){
   if(q.count!=2||q.arguments[0]||(q.callsite!=0x8007fc5c&&q.callsite!=0x8007fd28))return {};
   auto&slot=q.callsite==0x8007fc5c?windowPalette:windowObjects;
-  if(!slot){Heap h;h.bytes=q.arguments[1];h.base=eventHeapAllocate(0,h.bytes,vm().memoryBinding.services());++wc.heapAllocations;if(!h.base)return 0;h.backing=std::make_shared<std::vector<uint8_t>>();slot=std::move(h);}
+  if(!slot){Heap h;h.bytes=q.arguments[1];h.base=vm().memoryBinding.allocateHeap(0,h.bytes);++wc.heapAllocations;if(!h.base)return 0;h.backing=std::make_shared<std::vector<uint8_t>>();slot=std::move(h);}
   auto&h=*slot;if(h.bytes!=q.arguments[1])return {};if(h.adopted)return h.base;
   if(!gate(NativeUiStartupBoundary::HeapTransfer,h.base,h.bytes))return {};
   if(!h.detached){if(!vm().memory.extractRam(h.base,h.bytes,*h.backing))return {};h.detached=true;}
@@ -307,7 +307,7 @@ struct NativeUiStartup::State:std::enable_shared_from_this<NativeUiStartup::Stat
   if(!heap){
    // Actual source heap0 descriptor/arena already belongs to this very VM.
    // No native backing/token is returned instead of the source allocator.
-   Heap h;h.bytes=q.integers[1];h.base=eventHeapAllocate(0,h.bytes,vm().memoryBinding.services());++count.heapAllocations;
+   Heap h;h.bytes=q.integers[1];h.base=vm().memoryBinding.allocateHeap(0,h.bytes);++count.heapAllocations;
    if(!h.base)return 0;
    h.backing=std::make_shared<std::vector<uint8_t>>();heap=std::move(h);
   }

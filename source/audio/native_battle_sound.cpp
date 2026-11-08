@@ -129,7 +129,19 @@ bool NativeBattleSound::retireOwned(const PositionalSfxStopServices& backend){
 std::optional<int32_t> NativeBattleSound::voice(EventEntry& e){auto& x=*state_;if(x.retiring || x.starting || x.retirementInvoking || !x.current())return {};const uint64_t key=uint64_t(e.id)<<32|e.currentCommand;auto& cursor=x.voices[key];int32_t result=0;if(!resumeSourceBattleVoice(e,x.services,cursor,result)){x.pending=cursor.pending();return {};}x.voices.erase(key);x.pending=0;return result;}
 std::optional<int32_t> NativeBattleSound::menu(uint32_t key){return state_->start(key,{});}
 std::optional<int32_t> NativeBattleSound::position(uint32_t key,const std::array<float,3>& position){return state_->start(key,position);}
+bool NativeBattleSound::pitch(int32_t handle,int32_t value){auto&x=*state_;return x.current()&&x.services.pitch&&x.services.pitch(x.services.user,handle,value);}
 uint32_t NativeBattleSound::pending()const{return state_->pending;}
 bool NativeBattleSound::usesRegistry(const PositionalSfxRegistry* registry)const{return state_->binding.registry.get()==registry;}
 bool NativeBattleSound::usesRuntime(const EventNativeRuntime* vm)const{return state_->binding.vm==vm;}
+bool NativeBattleSound::ownsPending(const PositionalSfxRegistry* registry,unsigned index,const std::shared_ptr<const uint8_t>& birth)const{
+ const auto& x=*state_;
+ if(!birth||registry!=x.binding.registry.get()||index>=x.owned.size()||x.starting||x.retirementInvoking||x.retiring||x.retired||!x.current()||x.owned[index]!=birth||registry->slotLifetime(index)!=birth)return false;
+ const auto& slot=registry->slots[index];return slot.key!=-1&&slot.engine==-1&&(slot.flags&PendingFlag);
+}
+std::optional<std::string> NativeBattleSound::sourceRowName(uint32_t index)const{
+ const auto& x=*state_;if(index>=SoundRowCount||x.retired||x.retiring||!x.current())return {};const auto name=x.word(SoundRows+SoundRowBytes*index);return name?x.text(*name):std::nullopt;
+}
+std::optional<uint32_t> NativeBattleSound::sourceRowDescriptor(uint32_t index)const{
+ const auto& x=*state_;if(index>=SoundRowCount||x.retired||x.retiring||!x.current())return {};return x.word(SoundRows+SoundRowBytes*index+4);
+}
 }

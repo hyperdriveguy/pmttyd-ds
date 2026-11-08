@@ -104,6 +104,7 @@ bool Audio::init() {
     return true;
 }
 void Audio::play(const Game& game) {
+    updateHarborVoicePcm(game);
     if(!ready || !game.progress.sound)return;
     // Original save-block cue431 maps to cue index5 / NDSP channel7. The
     // channel is cleared before retriggering its fixed borrowed wave descriptor.
@@ -247,6 +248,7 @@ void Audio::updateFrontend(const OpeningTitle& title,bool enabled){
 // Stop callbacks and join the refill worker before closing streams/freeing
 // DSP-visible buffers. Queued descriptors must never outlive their backing data.
 void Audio::shutdown() {
+    stopHarborVoicePcm();
     fieldSfxBackend.clear();fieldMarioOwner=nullptr;
     if(ready)ndspSetCallback(nullptr,nullptr);
     musicWorkerRun.store(false,std::memory_order_release);
@@ -271,5 +273,6 @@ void Audio::shutdown() {
     }
     keyItemSlot=keyItemTailSlot=itemGetFieldSlot=itemGetFieldTrack=-1;keyItemEnvelope={};keyItemTail={};itemGetFieldEnvelope={};itemFanfareResourceAttempted={};itemFanfareResourceReady={};
     musicTrack=-1;
+    releaseHarborVoicePcm();
 }
 }

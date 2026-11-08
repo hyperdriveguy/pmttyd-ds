@@ -5,6 +5,13 @@
 #include "battle_class_menu_messages.hpp"
 #include <cstdlib>
 #include "native_battle_sound.hpp"
+#include "native_harbor_completion.hpp"
+#include "native_harbor_stylish.hpp"
+#include "native_harbor_nice.hpp"
+#include "native_harbor_nice_visual.hpp"
+#include "native_ui_startup.hpp"
+#include "event_gp_language_alias.hpp"
+#include <map>
 #include "battle_command_palette_memory.hpp"
 #include "message_assets.hpp"
 #include "event_native_runtime.hpp"
@@ -71,6 +78,7 @@ struct HarborTutorialRuntime {
  std::shared_ptr<const uint8_t>statusLife=std::make_shared<const uint8_t>(0);std::unique_ptr<NativeBattleStatusReader>statusReader;
  uint32_t statusBattle=0;std::shared_ptr<const uint8_t>statusBattleOwner;
  std::unique_ptr<BattleMenuFileBinding> menuBinding;BattleMenuResourceCursor menuCursor;
+ std::weak_ptr<NativeHarborCompletion> nativeCompletion;bool nativeCompletionFrozen=false;
  std::shared_ptr<BattleCommandPalette> commandPalette;
  void* resourceUser=nullptr;bool(*paperReady)(void*,uint32_t,int32_t)=nullptr;bool(*niceReady)(void*,int32_t)=nullptr;
  void* fadeUser=nullptr;void(*fadeEntry)(void*,int32_t,int32_t,uint32_t)=nullptr;bool(*fadeFinished)(void*)=nullptr;
@@ -81,6 +89,46 @@ struct HarborTutorialRuntime {
  // generations so an old finished animation cannot acknowledge a new pose.
  struct Interpolation{int32_t mode=0,start=0,end=0,limit=0,step=0;};
  std::unordered_map<uint32_t,Interpolation> interpolations;
+ struct NiceCall {NativeHarborNiceCursor cursor;std::map<uint32_t,uint32_t>entryReads;};
+ std::map<uint64_t,NiceCall>niceCalls;NiceCall*niceInvoking=nullptr;
+ NativeHarborNiceConsumer nativeNice;std::shared_ptr<NativeUiStartup>niceStartup;
+ std::shared_ptr<EventGpLanguageAlias>niceLanguage;
+ bool niceCurrent()const{return niceStartup&&niceStartup->current()&&niceLanguage&&niceLanguage->current()&&nativeNice.lifetime&&nativeNice.current&&nativeNice.current(nativeNice.user);}
+ std::optional<uint64_t>niceSpawn(const NativeHarborNiceSpawn&q){
+  if(!niceInvoking||!niceCurrent()||!nativeNice.spawn||q.type>4)return {};
+  // Captured source Entry/Draw resource operands, separate from the exact344
+  // parent. Native allocation/playback adapts the effect-pool/GX lifecycle.
+  auto load=[&](uint32_t a)->std::optional<uint32_t>{auto&cache=niceInvoking->entryReads;auto i=cache.find(a);if(i!=cache.end())return i->second;uint32_t v;if(!vm.memory.readWord(a,v))return {};cache.emplace(a,v);return v;};
+  const auto gp=load(0x80415fd0);if(!gp)return {};
+  const auto language=load(*gp+0x16c);if(!language)return {};
+  const auto mode=load(*gp+0x14);if(!mode)return {};
+  const auto names=load(0x80417af8+4u**language);if(!names)return {};
+  const auto key=load(*names+4*q.type);if(!key)return {};
+  const auto animation=load(0x80422ed0);if(!animation||*animation!=0x415f3100)return {};
+  const auto base=load(0x80422eb8);if(!base)return {};
+  NativeHarborNiceVisualRequest request;request.effect=q;request.sourceKey=*key;request.context=*mode!=0;request.language=*language;
+  std::memcpy(&request.modelScale,&*base,4);
+  if(*language==1&&(q.type==3||q.type==4)){const auto extra=load(0x80422ebc);if(!extra)return {};float factor;std::memcpy(&factor,&*extra,4);request.modelScale*=factor;}
+  const auto fade=load(0x802f3ea0+24*q.type+4u**language);if(!fade)return {};
+  std::memcpy(&request.fadeStart,&*fade,4);request.milliseconds=scene->now;
+  return nativeNice.spawn(nativeNice.user,request);
+ }
+ int niceEffect(EventEntry&e){
+  if(!niceCurrent()||!packed||!packed->sourceSound||niceInvoking)return pending(0x80106fa0);
+  const uint64_t key=(uint64_t(e.id)<<32)|e.currentCommand;auto&call=niceCalls[key];
+  niceInvoking=&call;struct Guard{NiceCall*&p;~Guard(){p=nullptr;}}guard{niceInvoking};
+  NativeHarborNiceServices s;s.user=this;s.lifetime=nativeNice.lifetime;
+  s.current=[](void*p){return static_cast<HarborTutorialRuntime*>(p)->niceCurrent();};
+  s.word=[](void*p,uint32_t a)->std::optional<uint32_t>{uint32_t v;if(!static_cast<HarborTutorialRuntime*>(p)->vm.memory.readWord(a,v))return {};return v;};
+  s.value=[](void*p,EventEntry&e,int32_t raw)->std::optional<int32_t>{return getEventValue(e,raw,static_cast<HarborTutorialRuntime*>(p)->vm.interpreterServices().operands);};
+  s.spawn=[](void*p,const NativeHarborNiceSpawn&q){return static_cast<HarborTutorialRuntime*>(p)->niceSpawn(q);};
+  s.scale=[](void*p,uint64_t id,float value){auto&r=*static_cast<HarborTutorialRuntime*>(p);return r.nativeNice.scale&&r.nativeNice.scale(r.nativeNice.user,id,value);};
+  s.sound=[](void*p,uint32_t name,const std::array<float,3>&pos){return static_cast<HarborTutorialRuntime*>(p)->packed->sourceSound->position(name,pos);};
+  s.pitch=[](void*p,int32_t handle,int32_t value){return static_cast<HarborTutorialRuntime*>(p)->packed->sourceSound->pitch(handle,value);};
+  if(!resumeNativeHarborNice(e,s,call.cursor))return pending(0x80106fa0);
+  niceCalls.erase(key);if(scene->pendingService==0x80106fa0){scene->pendingService=0;pendingEvent=0;}return 2;
+ }
+ std::unordered_map<uint64_t,NativeHarborStylishCursor>nativeStylish;
  HarborTutorialRuntime():vm(0x81000000,platform(this)){}
  // Source clock 243MHz feeds VM tick conversion; native timestamps are ms.
  // GP base 0x81000000 is emulated RAM. Arithmetic callbacks explicitly preserve
@@ -142,9 +190,20 @@ struct HarborTutorialRuntime {
  int call(EventEntry& e,uint32_t function,bool first){
  executingEvent=e.id;
  if(first){HarborTutorialRequest r{function,e.currentCommand,scene->now,e.owner,{}};for(unsigned i=0;i<e.argumentCount;++i)r.rawOperands.push_back(raw(e,i));scene->requests.push_back(std::move(r));}
+ if(function==0x80106fa0)return niceEffect(e);
+ if(function==0x80106dfc){
+  if(!packed)return pending(function);
+  const uint64_t key=(uint64_t(e.id)<<32)|e.currentCommand;auto&cursor=nativeStylish[key];
+  const auto value=nativeHarborStylishStart(vm,e,first,packed->hasNativePhysicalSample(),cursor);
+  if(!value)return pending(function);
+  if(*value){nativeStylish.erase(key);if(scene->pendingService==function){scene->pendingService=0;pendingEvent=0;}}
+  return *value;
+ }
+ if(function==0x80106d7c){const auto value=nativeHarborStylishResult(vm,e);if(!value)return pending(function);if(scene->pendingService==function){scene->pendingService=0;pendingEvent=0;}return *value;}
  if(packed){packed->publish(*scene);int32_t result=0;if(packed->invoke(e,function,first?1:0,result)){packed->capture(*scene);if(result!=0 && scene->pendingService==function){scene->pendingService=0;pendingEvent=0;}return result;}}
  if(function==0x80104498){const auto& a=scene->actors[actor(e)];if(a.heldItem!=0)return pending(function);if(scene->pendingService==function)scene->pendingService=0;output(e,1,0);return 2;}
  if(function==0x8011384c){output(e,0,(scene->battleFlags&uint32_t(raw(e,1)))!=0?1:0);return 2;}
+ if(function==0x801115f8 || function==0x80111720)return pending(function);
  auto found=callbacks.find(function);if(found==callbacks.end())return pending(function);
  switch(found->second){
  case 0:case 1:case 2:case 3:case 4:{auto& a=scene->actors[actor(e)];const auto script=uint32_t(value(e,1));switch(found->second){case 0:a.wait=script;break;case 1:a.attack=script;break;case 2:a.damage=script;break;case 3:a.confusion=script;break;case 4:a.phase=script;break;}return 2;}
@@ -247,7 +306,7 @@ void HarborTutorial::setStartupFade(void* user,void(*entry)(void*,int32_t,int32_
 // composition, not a renderer frame loop or complete source battle Main.
 // Intro completion requires original phase-root retirement without interruption;
 // no HP threshold or development key advances story/outcomes here.
-void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* physical){if(!runtime_ || failed || time<now)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
+void HarborTutorial::tick(uint64_t time,uint32_t keys,const BattlePadSample* physical){if(!runtime_ || failed || time<now || runtime_->nativeCompletionFrozen)return;now=time;auto& r=*runtime_;r.scene=this;if(message.active())message.tick(now,keys);
  const auto speakerSlot=visualSlot(speaker);
  if(message.poseRequestSerial!=r.messagePoseSerial && speakerSlot>=0){r.messagePoseSerial=message.poseRequestSerial;auto& a=actors[size_t(speakerSlot)];const auto& pose=message.poseRequest==MessagePlayback::PoseRequest::Talk?a.talkPose:a.stayPose;if(!pose.empty()){a.pose=pose;a.poseAt=message.poseRequestedAt;}}
  const bool heldActionManager=r.packed->actionManagerPending();
@@ -357,6 +416,15 @@ std::optional<HarborClassMenuDrawBinding> HarborTutorial::classMenuDrawBinding(
 // Process-owned palette binds once per runtime; same owner may reattach,
 // different owner is rejected. Do not reset source color history on each battle
 // entry/display; caller owns the shared palette across scene lifetimes.
+bool HarborTutorial::bindNativeNice(std::shared_ptr<NativeUiStartup> startup,const NativeHarborNiceConsumer&consumer){
+ if(!runtime_||!runtime_->packed||!startup||!startup->current()||!consumer.lifetime||!consumer.current||!consumer.current(consumer.user)||!consumer.spawn||!consumer.scale)return false;
+ auto&r=*runtime_;const auto process=startup->fieldProcess();if(!process)return false;
+ if(r.nativeNice.lifetime)return r.niceStartup==startup&&r.nativeNice.lifetime==consumer.lifetime&&r.nativeNice.user==consumer.user&&r.nativeNice.current==consumer.current&&r.nativeNice.spawn==consumer.spawn&&r.nativeNice.scale==consumer.scale&&r.niceLanguage&&r.niceLanguage->current();
+ auto&sourceGp=process->process().vm().gpAddresses;
+ auto alias=std::make_shared<EventGpLanguageAlias>(sourceGp,sourceGp.currentAddress(),startup->lifetime(),[startup]{return startup->current();});
+ if(!alias->current()||!r.vm.gpAddresses.bindLanguageAlias(r.vm.gpAddresses.currentAddress(),alias))return false;
+ r.niceStartup=std::move(startup);r.niceLanguage=std::move(alias);r.nativeNice=consumer;return true;
+}
 bool HarborTutorial::bindPublicSound(std::shared_ptr<PositionalSfxRegistry> registry){
  if(!runtime_ || !runtime_->packed || !registry)return false;
  auto& r=*runtime_;
@@ -373,6 +441,9 @@ bool HarborTutorial::bindPublicSound(std::shared_ptr<PositionalSfxRegistry> regi
    b==static_cast<Proof*>(user)->battle;
  };
  r.packed->sourceSound=std::make_shared<NativeBattleSound>(binding);return true;
+}
+std::shared_ptr<NativeBattleSound> HarborTutorial::nativeGameplaySound()const{
+ return runtime_&&runtime_->packed&&!failed?runtime_->packed->sourceSound:nullptr;
 }
 std::optional<int32_t> HarborTutorial::startPublicMenuSound(uint32_t key){
  if(!runtime_ || !runtime_->packed || !runtime_->packed->sourceSound)return {};
@@ -479,6 +550,38 @@ std::optional<int32_t> HarborTutorial::inputCommand(const BattlePadSample& sampl
  r.packed->capture(*this);return result;
 }
 bool HarborTutorial::readPackedWord(uint32_t address,uint32_t& value)const{return runtime_ && runtime_->packed && runtime_->packed->readWord(address,value);}
+std::shared_ptr<NativeHarborCompletion>HarborTutorial::beginNativeCompletion(int32_t result){
+ if(!runtime_||!runtime_->packed||!sourceMenuRegistration_)return {};
+ auto r=runtime_;
+ if(auto prior=r->nativeCompletion.lock())return result==1?prior:nullptr;
+ if(r->nativeCompletionFrozen)return {}; // Explicit cancellation never replays partial teardown.
+ if(!initialized||!introComplete||message.active()||r->vm.schedule.managerActive||pendingService||r->packed->hitEventsActive())return {};
+ // Unit deletion can hide U+2b4 before its actual damage root retires.
+ // Native admission permits only known ordinary wait roots to be cancelled;
+ // every other original event must finish, regardless of registry visibility.
+ if(r->vm.battle.capacity<0||r->vm.battle.capacity>256||(r->vm.battle.capacity&&!r->vm.battle.entries))return {};
+ for(int32_t i=0;i<r->vm.battle.capacity;++i){const auto& e=r->vm.battle.entries[i];if(!(e.flags&1))continue;
+  bool wait=false;
+  for(const auto& actor:actors)wait|=actor.id>=0&&actor.wait&&e.owner==actor.id&&e.restartScript==actor.wait;
+  wait|=systemActor.id>=0&&systemActor.wait&&e.owner==systemActor.id&&e.restartScript==systemActor.wait;
+  if(!wait)return {};
+ }
+ const auto actual=nativeGameplayConclusion();if(!actual||*actual!=result||result!=1)return {};
+ if(r->menuCursor.phase || (r->sourceDisplay&&r->sourceDisplay->pass()&&!r->sourceDisplay->complete(r->sourceDisplay->pass())))return {};
+ uint32_t battle=0;if(!r->vm.memory.readWord(0x8041eb90,battle)||!battle)return {};
+ const auto allocation=r->packed->sourceAllocationLifetime(battle);
+ if(!allocation&&battle!=HarborTutorialPacked::Battle)return {};
+ const std::weak_ptr<HarborSourceMenuRegistration>registration=sourceMenuRegistration_;
+ const std::weak_ptr<HarborTutorialRuntime>weak=r;
+ NativeHarborCompletionBinding binding;binding.vm=&r->vm;binding.packed=r->packed.get();binding.lifetime=r;binding.menuFiles=r->files;binding.result=result;
+ binding.current=[registration,weak,battle,allocation]{
+  const auto slot=registration.lock();if(!slot)return false;
+  const auto expected=weak.lock();if(!expected||slot->runtime.lock()!=expected||!expected->packed)return false;
+  uint32_t current=0;return expected->vm.memory.readWord(0x8041eb90,current)&&current==battle&&expected->packed->sourceAllocationLifetime(current)==allocation;
+ };
+ auto owner=std::make_shared<NativeHarborCompletion>(std::move(binding));
+ r->nativeCompletion=owner;r->nativeCompletionFrozen=true;return owner;
+}
 std::weak_ptr<const void>HarborTutorial::nativeGameplayLifetime()const{return runtime_;}
 std::optional<int32_t>HarborTutorial::nativeGameplayConclusion(){
  if(!runtime_||!runtime_->packed||failed||attackActive||damageActive||phaseActive)return {};

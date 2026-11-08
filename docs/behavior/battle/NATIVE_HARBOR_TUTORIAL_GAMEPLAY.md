@@ -92,9 +92,12 @@ to actual VM operands/actor lookup and existing source `actionPrizeLevel`. It
 preserves captured-work versus fresh unit lookup, low-code30's early return and
 actual unknown-byte holds. A direct registered-entry test proves the early route
 does not read an unknown grade byte or manufacture a default. Successful Jump
-then reaches the genuine remaining ACSuccessEffect80106fa0 boundary after its
-first actual hit. That callback is not acknowledged from a trace/vector or
-forced failure. A real native original-asset effect owner remains required to
-finish successful actions. Ordinary lethal progression separately reaches the
-existing-but-unbound AddRotate801115f8 adapter before conclusion; completion
-work must close that real death path too.
+then reaches ACSuccessEffect80106fa0 after its first actual hit when no visual
+consumer is bound. The integrated [original-bank Nice owner](../display/NATIVE_HARBOR_NICE_EFFECTS.md)
+and [physical stylish policy](NATIVE_HARBOR_STYLISH_WINDOW.md) now admit their
+actual supported children; an actual successful source round reaches turn2.
+The [bounded completion contribution](NATIVE_HARBOR_COMPLETION_POLICY.md) also
+binds original fatal rotation. The next observed lethal hold is the real
+`evt_eff` request for `kemuri_test` type4, before conclusion. Native framebuffer,
+audible playback, complete fatal effects and normal field return still require
+integration evidence; no result or story advance is inferred from HP0.

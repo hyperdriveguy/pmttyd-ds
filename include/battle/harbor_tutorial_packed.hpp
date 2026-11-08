@@ -53,6 +53,8 @@ public:
  bool unitInitReady();
  std::optional<int32_t> actMenu(HarborTutorial&,void*,uint32_t(*)(void*,uint32_t),bool setup,uint32_t flag=0);
  bool classUiRelease(uint32_t);
+ // Native teardown only, after actual presentation and event cancellation.
+ bool retireNativeClassUi();
  std::shared_ptr<const uint8_t> classUiLifetime(uint32_t at) const{
   const auto it=classUiLifetimes.find(at);return it==classUiLifetimes.end()?nullptr:it->second;
  }
@@ -62,6 +64,7 @@ public:
  std::optional<bool> attackAudienceMenu(HarborTutorial&);
  BattleMenuAudienceCursor audienceMenuCursor;
  std::shared_ptr<NativeBattleSound> sourceSound;
+ bool hasNativePhysicalSample()const{return physicalCurrent;}
  BattlePresentItemCursor presentItemCursor;
  std::optional<int32_t> presentItem();
  void captureClassRows(HarborTutorial&);

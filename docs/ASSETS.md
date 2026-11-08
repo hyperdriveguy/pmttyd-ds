@@ -4459,3 +4459,18 @@ heap-owned texture after delivery. Per-asset source paths, ISO offsets, BSS
 origin and Nintendo/Intelligent Systems rights remain in provenance.json.
 Tracking grants no redistribution license; caches/compiled packs/ISO remain
 outside source history, and checked-in edits are not overwritten.
+## Original Mario action-voice primary samples
+
+`assets/original/audio/mario-action-voice/` holds fifteen editable mono PCM16 WAVs
+from original US Mario action classes AC1/AC2/AC3. The empty-destination importer
+`tools/import_mario_action_voice_assets.py` opens the original ISO read-only,
+checks the original name arrays and sound rows, follows each project object/macro
+to primary samples590..604 and preserves original22050Hz without normalization.
+The folder provenance records source paths, ISO encoded-sample offsets/hashes,
+whole-bank hashes, name/effect/sample identities and decoder/importer identity.
+Total sample data419478 bytes; no raw banks or compiled packs enter history.
+Each normal `kind:sfx` recipe copies its checked-in editable WAV to RomFS; normal
+builds never import over edits. Original rights remain reserved; no new license
+is granted. Playback is finite primary-sample presentation, not full MusyX macro,
+pitch, envelope or spatial emulation. See the per-asset LICENSE/provenance and
+[ownership contract](behavior/audio/NATIVE_MARIO_ACTION_VOICE_PCM.md).

@@ -9,7 +9,7 @@ namespace ttyd {
 EventEntryStorage::~EventEntryStorage() {retireAll();}
 EventEntry* EventEntryStorage::allocate(int32_t heap,uint32_t bytes) {
     assert(bytes!=0 && bytes%EventEntryAddresses::stride==0);
-    const uint32_t base=eventHeapAllocate(heap,bytes,memory_.services());
+    const uint32_t base=memory_.allocateHeap(heap,bytes);
     if(!base)return nullptr;
     const uint32_t count=bytes/EventEntryAddresses::stride;
     auto storage=std::make_unique<EventEntry[]>(count);

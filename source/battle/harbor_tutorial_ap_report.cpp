@@ -1,17 +1,18 @@
 #include "battle_ap_report.hpp"
+#include "native_harbor_stylish.hpp"
 #include "event_heap_allocation.hpp"
 #include "harbor_tutorial_packed.hpp"
 #include <climits>
 #include <cmath>
 namespace ttyd {
 // Battle+18ffc is source AP report work; byte+a is the bingo-chance gate.
-// Only its zero path is admitted until the actual bingo producer is bound.
+// Nonzero chance is also admitted with the genuine PointInc zero-SP earlyreturn.
 // Scalar arithmetic is routed through VM platform operations to retain source
 // conversion/rounding order; a native algebraic rewrite can change results.
 bool HarborTutorialPacked::inviteApReport() {
-  // PointInc's full bingo producer remains unbound. Admit this report only
-  // when the original chance byte cannot request it; preserve the RNG draw.
-  if (byte(battleAddress() + 0x18ffc + 0xa))
+  // Enabled bingo reels remain unbound. The actual prologue pouch gate0
+  // makes PointInc a source earlyreturn; preserve the original RNG draw.
+  if (byte(battleAddress() + 0x18ffc + 0xa) && !nativeHarborPointIncrementZeroDomain(vm))
     return false;
   BattleApReportServices s;
   s.memory = nativeBattleActorServices(vm);
@@ -71,6 +72,7 @@ bool HarborTutorialPacked::inviteApReport() {
   s.random = [](void *self, int32_t bound) {
     return static_cast<HarborTutorialPacked *>(self)->random.bounded(bound);
   };
+  s.pointIncrement=[](void*self){return nativeHarborPointIncrementZeroDomain(static_cast<HarborTutorialPacked*>(self)->vm);};
   return packedBattleInviteApReport(s);
 }
 } // namespace ttyd

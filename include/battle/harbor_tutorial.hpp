@@ -14,7 +14,9 @@
 #include <vector>
 #include <optional>
 namespace ttyd {
+struct NativeHarborNiceConsumer;
 struct PositionalSfxRegistry;
+class NativeBattleSound;class NativeHarborCompletion;
 bool loadHarborTutorialAssets(const char* root);
 // Native projection of an admitted source actor; scripts/kind are guest tokens.
 // work has the original 16 unit-work slots. poseAt is a millisecond generation
@@ -125,6 +127,8 @@ public:
     // Same process public pending-slot owner used by original voice/menu On.
     // Attach after begin; no synthesized handle/sample or audible-voice receipt.
     bool bindPublicSound(std::shared_ptr<PositionalSfxRegistry>);
+    std::shared_ptr<NativeBattleSound> nativeGameplaySound()const;
+    bool bindNativeNice(std::shared_ptr<NativeUiStartup>,const NativeHarborNiceConsumer&);
     std::optional<int32_t> startPublicMenuSound(uint32_t key);
     // Original CommandDisplay registration only. The caller retains queue and
     // cursor across waits, once per simulation display pass, and dispatches all
@@ -174,6 +178,7 @@ public:
     // Port driver identity and original conclusion predicate. A numeric result
     // is not whole End, reward export, teardown or field-return completion.
     std::weak_ptr<const void> nativeGameplayLifetime()const;
+ std::shared_ptr<NativeHarborCompletion> beginNativeCompletion(int32_t originalResult);
     std::optional<int32_t> nativeGameplayConclusion();
     bool nativeGameplayNextTurn();
     bool running() const{return triggered;}
@@ -187,6 +192,7 @@ private:
     std::shared_ptr<HarborTutorialRuntime> runtime_;
     // Copies share one actual-runtime registration; a new begin gives only
     // that facade a fresh slot. The slot never pins the VM it identifies.
+    friend struct NativeHarborCompletionFixture;
     mutable std::shared_ptr<HarborSourceMenuRegistration> sourceMenuRegistration_;
     NativeFacadeRegistration nativeMenuRegistration_;
 };

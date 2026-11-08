@@ -1,6 +1,21 @@
 {
   "schema": 1,
   "assets": [
+    {"id": "original/audio/mario-voice-ac1-1.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac1-1.wav", "output": "mario-voice-ac1-1.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac1-2.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac1-2.wav", "output": "mario-voice-ac1-2.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac1-3.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac1-3.wav", "output": "mario-voice-ac1-3.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac1-4.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac1-4.wav", "output": "mario-voice-ac1-4.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac1-5.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac1-5.wav", "output": "mario-voice-ac1-5.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac2-1.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac2-1.wav", "output": "mario-voice-ac2-1.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac2-2.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac2-2.wav", "output": "mario-voice-ac2-2.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac2-3.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac2-3.wav", "output": "mario-voice-ac2-3.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac2-4.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac2-4.wav", "output": "mario-voice-ac2-4.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac2-5.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac2-5.wav", "output": "mario-voice-ac2-5.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac3-1.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac3-1.wav", "output": "mario-voice-ac3-1.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac3-2.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac3-2.wav", "output": "mario-voice-ac3-2.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac3-3.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac3-3.wav", "output": "mario-voice-ac3-3.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac3-4.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac3-4.wav", "output": "mario-voice-ac3-4.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
+    {"id": "original/audio/mario-voice-ac3-5.wav", "kind": "sfx", "source": "assets/original/audio/mario-action-voice/mario-voice-ac3-5.wav", "output": "mario-voice-ac3-5.wav", "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"},
     {
       "id": "original/display/fade-startup-memory",
       "kind": "event",

@@ -103,7 +103,7 @@ bool NativeEffectProcess::busy()const{return state_ && (state_->init.active || s
 std::shared_ptr<NativeUiStartup> NativeEffectProcess::ui()const{return state_?state_->ui:nullptr;}
 EffectPoolServices NativeEffectProcess::services(){
  EffectPoolServices s;s.memory=state_->vm().memoryBinding.services();s.user=state_.get();
- s.heapAllocate=[](void* p,int32_t heap,uint32_t bytes)->std::optional<uint32_t>{auto& c=*static_cast<State*>(p);c.pending=HeapAllocate;if(!c.current())return {};return eventHeapAllocate(heap,bytes,c.vm().memoryBinding.services());};
+ s.heapAllocate=[](void* p,int32_t heap,uint32_t bytes)->std::optional<uint32_t>{auto& c=*static_cast<State*>(p);c.pending=HeapAllocate;if(!c.current())return {};return c.vm().memoryBinding.allocateHeap(heap,bytes);};
  s.clear=[](void* p,uint32_t at,uint32_t bytes){auto& c=*static_cast<State*>(p);c.pending=Clear;if(!c.current())return false;eventFillMemory(at,0,bytes,c.vm().memoryBinding.services());return true;};
  s.heapFree=[](void* p,int32_t heap,uint32_t at){auto& c=*static_cast<State*>(p);c.pending=HeapFree;if(!c.current())return false;eventHeapFree(heap,at,c.vm().memoryBinding.services());return true;};
  s.update=[](void* p,uint32_t callback,uint32_t effect){auto& c=*static_cast<State*>(p);c.pending=callback;const auto& b=c.backend;return c.current() && b.lifetime && b.current && b.update && b.current(b.user) && b.update(b.user,callback,effect);};

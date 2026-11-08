@@ -2,6 +2,7 @@
 #include "source_battle_voice.hpp"
 #include "positional_sfx_registry.hpp"
 #include <memory>
+#include <string>
 namespace ttyd {
 struct EventNativeRuntime;class BattleRandom;
 struct NativeBattleSoundBinding {
@@ -22,9 +23,14 @@ public:
  std::optional<int32_t> menu(uint32_t key);
  // Same atomic real source On owner with an actual captured source position.
  std::optional<int32_t> position(uint32_t key,const std::array<float,3>&);
+ bool pitch(int32_t handle,int32_t value);
  uint32_t pending()const;
  bool usesRegistry(const PositionalSfxRegistry*)const;
  bool usesRuntime(const EventNativeRuntime*)const;
+ // Actual source On birth ownership; never infer this from a shared-bank row.
+ bool ownsPending(const PositionalSfxRegistry*,unsigned,const std::shared_ptr<const uint8_t>&)const;
+ std::optional<std::string> sourceRowName(uint32_t)const;
+ std::optional<uint32_t> sourceRowDescriptor(uint32_t)const;
  // Native teardown: caller first cancels actual battle events outside render.
  // Only actual births owned here are stopped; foreign/reused slots survive.
  // False retains successful earlier stops and pins the backend across retries.
