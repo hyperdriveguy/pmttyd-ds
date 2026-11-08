@@ -1,5 +1,7 @@
 #include "field_light_registry_owner.hpp"
 #include "event_native_runtime.hpp"
+#include "event_heap_allocation.hpp"
+#include "native_field_animation.hpp"
 #include "event_script_assets.hpp"
 #include "fixtures/harbor_light_golden.hpp"
 #include <cassert>
@@ -151,4 +153,105 @@ void originalMapLightBridge(const char* root){
  assert(word(m,CraftAmbient)==0x11223344 && word(m,PaperAmbient)==0x55667788);
  FieldMapSourceCall unknown;unknown.function=0x8000f36c;assert(!owner->service(unknown));
 }
-int main(){originalMapLightBridge("romfs");nativeLightOwner("romfs");nativeHarborLights("romfs");nativeLightSdkConstants("romfs");}
+
+// Exercise original heap0 allocation against the actual cold process VM. The
+// owner must preserve SDK headers, source publication order and a held flush.
+void sourceHeapLightBanks(const char* root){
+ constexpr uint32_t Scratch=0x8d0c0000,BankBytes=Capacity*RecordBytes;
+ constexpr uint32_t SdkDescriptors=0x8041f070,HeapHandles=0x8041e844;
+ constexpr uint32_t DescriptorBytes=12,HeaderBytes=32,NodeNext=4,NodeSize=8;
+ constexpr unsigned SdkListVisitLimit=4096;
+ struct Backend {
+  std::shared_ptr<NativeFieldAnimation> field;
+  std::array<uint32_t,2> addresses{};
+  unsigned allocations=0,flushes=0;
+  bool available=false,flush=false,alive=true,retireOnAllocation=false;
+  EventNativeRuntime& vm(){return field->process().vm();}
+  bool current(){
+   if(!alive || !field->process().heapGlobalsCurrent())return false;
+   auto& m=vm().memory;const auto descriptors=word(m,SdkDescriptors),handle=word(m,HeapHandles);
+   uint32_t node=word(m,descriptors+DescriptorBytes*handle+NodeSize);unsigned found=0;
+   // A changed head or severed SDK allocated list invalidates the provider.
+   for(unsigned budget=0;node && budget<SdkListVisitLimit;++budget){
+    for(unsigned i=0;i<allocations;++i)if(addresses[i] && node+HeaderBytes==addresses[i]){
+     if(word(m,node+NodeSize)<BankBytes+HeaderBytes)return false;
+     ++found;
+    }
+    node=word(m,node+NodeNext);
+   }
+   unsigned expected=0;for(unsigned i=0;i<allocations;++i)expected+=addresses[i]!=0;
+   return found==expected;
+  }
+  FieldLightHeapServices services(){
+   FieldLightHeapServices h;h.user=this;
+   h.current=[](void* p){return static_cast<Backend*>(p)->current();};
+   h.allocate=[](void* p,uint32_t heap,uint32_t size,uint32_t& out){
+    auto& b=*static_cast<Backend*>(p);assert(heap==0 && size==BankBytes && b.allocations<2);
+    if(!b.available)return false;
+    out=eventHeapAllocate(int32_t(heap),size,b.vm().memoryBinding.services());
+    b.addresses[b.allocations++]=out;
+    if(b.retireOnAllocation){b.alive=false;b.retireOnAllocation=false;}
+    return true;
+   };
+   h.flush=[](void* p,uint8_t* bytes,uint32_t size){
+    auto& b=*static_cast<Backend*>(p);assert(bytes && size==BankBytes && reinterpret_cast<uintptr_t>(bytes)%32==0);
+    ++b.flushes;return b.flush;
+   };return h;
+  }
+ } backend;
+ EventNativePlatform platform;platform.flushBlock=[](void*,uint32_t){};platform.systemCall=[](void*){};
+ platform.truncate=[](void*,float f){return int32_t(f);};
+ platform.subtractDouble=[](void*,double a,double b){volatile double v=a-b;return v;};
+ platform.roundDoubleFloat=[](void*,double d){volatile float v=float(d);return v;};
+ backend.field=NativeFieldAnimation::create(root,NativeFileCache::create(),platform);assert(backend.field);
+ auto& m=backend.vm().memory;EventScriptAssets definitions;
+ assert(definitions.load((std::string(root)+"/field-light-registry.pmevt").c_str()));
+ // Shared source literals may already exist; retain their original backing.
+ for(const auto& segment:definitions.segments()){
+  uint32_t begin=0;std::vector<uint8_t> missing;
+  auto publish=[&](){if(!missing.empty()){assert(m.registerRam(begin,std::move(missing)));missing.clear();}};
+  for(uint32_t i=0;i<segment.size;++i){uint8_t expected=0,actual=0;const auto at=segment.address+i;
+   assert(definitions.readByte(at,expected));
+   if(m.readByte(at,actual)){assert(actual==expected);publish();}
+   else{if(missing.empty())begin=at;missing.push_back(expected);}
+  }publish();
+ }
+ assert(m.registerRam(ActiveGroup,std::vector<uint8_t>(4)));
+ auto owner=FieldLightRegistryOwner::bind(m,Scratch,backend.services());FieldLightRequest request,foreign;
+ assert(owner && owner->scratchAddress()==Scratch && !owner->bankAddress(0) && !owner->bankAddress(1));
+ assert(!owner->initialize(request) && owner->pending() && backend.allocations==0 && word(m,Work)==Capacity);
+ backend.available=true;
+ assert(!owner->initialize(request) && backend.allocations==1 && backend.flushes==1);
+ const auto first=owner->bankAddress(0);assert(first==backend.addresses[0] && first && first!=Scratch && word(m,Work+4)==0);
+ assert(word(m,first-HeaderBytes+NodeSize)>=BankBytes+HeaderBytes); // Unchanged actual SDK header.
+ assert(m.writeByte(first+7,0xed));
+ assert(!owner->initialize(foreign) && backend.flushes==1);
+ assert(!owner->initialize(request) && backend.allocations==1 && backend.flushes==2);
+ uint8_t marker=0;assert(m.readByte(first+7,marker) && marker==0xed);
+ backend.flush=true;assert(owner->initialize(request) && owner->ready() && backend.allocations==2);
+ const auto second=owner->bankAddress(1);assert(second==backend.addresses[1] && second!=first && second!=first+BankBytes);
+ assert(word(m,Work+4)==first && word(m,Work+12)==second && owner->record(first) && owner->record(second));
+ assert(m.readByte(first+7,marker) && marker==0xed); // No wrapper clear replay.
+ const auto descriptor=word(m,SdkDescriptors)+DescriptorBytes*word(m,HeapHandles),head=word(m,descriptor+NodeSize);
+ assert(m.writeWord(descriptor+8,0) && !owner->ready());
+ assert(m.writeWord(descriptor+8,head) && owner->ready());
+ backend.alive=false;assert(!owner->ready() && !owner->reset(request));backend.alive=true;assert(owner->ready());
+ auto replacement=bytes(m,first,BankBytes);assert(m.unregisterExternalRam(first) && m.registerRam(first,replacement));
+ assert(!owner->ready());owner.reset();assert(bytes(m,first,BankBytes)==replacement);
+ // Exhaustion is acknowledged once for each original call, with no fabricated
+ // bank or repeated allocation. Source Init publishes both nulls and finishes
+ // presets; native record/query consumers still reject the absent banks.
+ backend.addresses={};backend.allocations=0;backend.flushes=0;
+ const auto freeHead=word(m,descriptor+4);assert(m.writeWord(descriptor+4,0));
+ owner=FieldLightRegistryOwner::bind(m,Scratch,backend.services());assert(owner);
+ backend.retireOnAllocation=true;
+ assert(!owner->initialize(request) && backend.allocations==1 && owner->pending());
+ backend.alive=true;
+ assert(owner->initialize(request));
+ assert(backend.allocations==2 && backend.flushes==0 && !owner->bankAddress(0) && !owner->bankAddress(1));
+ assert(word(m,Work+4)==0 && word(m,Work+12)==0 && !owner->record(0));
+ assert(owner->initialize(request) && backend.allocations==2 && !owner->reset(request));
+ assert(m.writeWord(descriptor+4,freeHead));
+}
+
+int main(){sourceHeapLightBanks("romfs");originalMapLightBridge("romfs");nativeLightOwner("romfs");nativeHarborLights("romfs");nativeLightSdkConstants("romfs");}

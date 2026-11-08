@@ -6000,3 +6000,23 @@ children and whole Mario Main/sequence/field-to-battle ownership remain separate
 The bounded US-name/string adapter and explicit packed checkpoint copy do not
 close those owners or prove a Crump round trip. Existing open field/sequence
 requests remain active; source-ready group polling is not file-delivery proof.
+
+
+### Shared map allocation implementation breadcrumb (2026-11-07)
+
+The light registry owner now admits actual source heap0 returns rather than
+requiring fixture addresses. Its retained native flush preserves completed SDK
+allocation/clear effects and exact guest-address records; null source returns
+remain distinguishable from waits. See
+[owner contract](../behavior/field/NATIVE_LIGHT_REGISTRY_OWNER.md).
+
+Next native map integration still needs one owner rooted in the ready camera/
+shadow/UI/animation process, actual primary map-pool borrowing and real mapInit
+Work allocation. Static mapInit review confirms allocation0 is published and
+then passed to its explicit memset; hold there without retrying __memAlloc.
+Source `_mapLoad` must keep global0 unset through unavailable GX capture. A
+Citro3D VBlank wait alone is not a GPU command-queue completion receipt; use a
+renderer-owned outside-frame Begin/End scope for the pre-load native fence.
+Read-only handoffs: artifacts/shared-map-allocation-review.md and
+artifacts/native-shared-map-render-handoff.md. These are implementation/static
+findings, not an original Dolphin execution trace or completed opening demo.

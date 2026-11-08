@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstring>
 #include <limits>
+#include <vector>
 namespace ttyd {
 namespace {
 using namespace FieldLightRegistrySource;
@@ -18,40 +19,49 @@ int32_t signedWord(uint32_t value){return value<=INT32_MAX?int32_t(value):int32_
 bool overlaps(uint32_t a,uint32_t n,uint32_t b,uint32_t m){return uint64_t(a)<uint64_t(b)+m && uint64_t(b)<uint64_t(a)+n;}
 }
 FieldLightRegistryOwner::FieldLightRegistryOwner(EventAddressSpace& memory,uint32_t base,const FieldLightHeapServices& heap):memory_(memory),allocationBase_(base),heap_(heap){}
-uint32_t FieldLightRegistryOwner::bankAddress(unsigned group) const{return allocationBase_+group*BankBytes;}
-uint32_t FieldLightRegistryOwner::scratchAddress() const{return allocationBase_+2*BankBytes;}
+uint32_t FieldLightRegistryOwner::bankAddress(unsigned group) const{
+ if(group>=banks_.size())return 0;
+ return heap_.allocate?bankAddresses_[group]:allocationBase_+group*BankBytes;
+}
+uint32_t FieldLightRegistryOwner::scratchAddress() const{return heap_.allocate?allocationBase_:allocationBase_+2*BankBytes;}
+bool FieldLightRegistryOwner::map(uint32_t address,uint8_t* bytes,uint32_t size){
+ if(mapped_==mappings_.size() || !memory_.registerExternalRam(address,bytes,size))return false;
+ mappings_[mapped_++]={address,size,bytes};return true;
+}
 std::unique_ptr<FieldLightRegistryOwner> FieldLightRegistryOwner::bind(EventAddressSpace& memory,uint32_t base,const FieldLightHeapServices& heap){
- if(!base || !heap.flush || (base&(CacheLineBytes-1)) || uint64_t(base)+2*BankBytes+ScratchBytes+MapScratchBytes>0x100000000ULL)return {};
+ const uint32_t extent=(heap.allocate?0:2*BankBytes)+ScratchBytes+MapScratchBytes;
+ if(!base || !heap.flush || (base&(CacheLineBytes-1)) || uint64_t(base)+extent>0x100000000ULL ||
+    (heap.current && !heap.current(heap.user)))return {};
  auto owner=std::unique_ptr<FieldLightRegistryOwner>(new FieldLightRegistryOwner(memory,base,heap));
- auto map=[&](uint32_t address,uint8_t* bytes,uint32_t size){
-  if(!memory.registerExternalRam(address,bytes,size))return false;
-  owner->mappings_[owner->mapped_++]=address;return true;
- };
- if(!map(Work,owner->descriptors_.data(),uint32_t(owner->descriptors_.size())) ||
-    !map(Presets,reinterpret_cast<uint8_t*>(owner->presets_.data()),uint32_t(sizeof(owner->presets_))) ||
-    !map(base,reinterpret_cast<uint8_t*>(owner->banks_[0].data()),BankBytes) ||
-    !map(base+BankBytes,reinterpret_cast<uint8_t*>(owner->banks_[1].data()),BankBytes) ||
-    !map(owner->scratchAddress(),owner->scratch_.data(),uint32_t(owner->scratch_.size())) ||
-    !map(CraftAmbient,owner->ambient_.data(),AmbientBytes))return {};
+ if(!owner->map(Work,owner->descriptors_.data(),uint32_t(owner->descriptors_.size())) ||
+    !owner->map(Presets,reinterpret_cast<uint8_t*>(owner->presets_.data()),uint32_t(sizeof(owner->presets_))))return {};
+ if(!heap.allocate){
+  for(unsigned group=0;group<owner->banks_.size();++group){
+   if(!owner->map(owner->bankAddress(group),reinterpret_cast<uint8_t*>(owner->banks_[group].data()),BankBytes))return {};
+   owner->bankMapped_[group]=true;
+  }
+ }
+ if(!owner->map(owner->scratchAddress(),owner->scratch_.data(),uint32_t(owner->scratch_.size())) ||
+    !owner->map(CraftAmbient,owner->ambient_.data(),AmbientBytes))return {};
  return owner;
 }
 FieldLightRegistryOwner::~FieldLightRegistryOwner(){
- const std::array<const uint8_t*,6> backing{{descriptors_.data(),reinterpret_cast<const uint8_t*>(presets_.data()),reinterpret_cast<const uint8_t*>(banks_[0].data()),reinterpret_cast<const uint8_t*>(banks_[1].data()),scratch_.data(),ambient_.data()}};
- while(mapped_){--mapped_;memory_.unregisterExternalRam(mappings_[mapped_],backing[mapped_]);}
+ while(mapped_){const auto& m=mappings_[--mapped_];memory_.unregisterExternalRam(m.address,m.backing);}
 }
 bool FieldLightRegistryOwner::current() const{
- if(mapped_!=mappings_.size())return false;
+ if(heap_.current && !heap_.current(heap_.user))return false;
+ constexpr unsigned FixedMappings=4;
+ const unsigned banks=unsigned(bankMapped_[0])+unsigned(bankMapped_[1]);
+ if(mapped_!=FixedMappings+banks)return false;
  // Identity predicates are also called inside SDK raw borrows. They must
  // inspect backing without opening a nested borrow.
- return memory_.hasRamBacking(Work,descriptors_.data(),uint32_t(descriptors_.size())) &&
-   memory_.hasRamBacking(Presets,reinterpret_cast<const uint8_t*>(presets_.data()),uint32_t(sizeof(presets_))) &&
-   memory_.hasRamBacking(bankAddress(0),reinterpret_cast<const uint8_t*>(banks_[0].data()),BankBytes) &&
-   memory_.hasRamBacking(bankAddress(1),reinterpret_cast<const uint8_t*>(banks_[1].data()),BankBytes) &&
-   memory_.hasRamBacking(scratchAddress(),scratch_.data(),uint32_t(scratch_.size())) &&
-   memory_.hasRamBacking(CraftAmbient,ambient_.data(),AmbientBytes);
+ for(unsigned index=0;index<mapped_;++index){const auto& m=mappings_[index];
+  if(!memory_.hasRamBacking(m.address,m.backing,m.bytes))return false;
+ }
+ return true;
 }
 bool FieldLightRegistryOwner::owns(uint32_t address,uint32_t size) const{
- for(unsigned group=0;group<2;++group)if(address>=bankAddress(group) && uint64_t(address)+size<=uint64_t(bankAddress(group))+BankBytes)return true;
+ for(unsigned group=0;group<2;++group)if(bankAddress(group) && address>=bankAddress(group) && uint64_t(address)+size<=uint64_t(bankAddress(group))+BankBytes)return true;
  return address>=Presets && uint64_t(address)+size<=uint64_t(Presets)+sizeof(presets_);
 }
 bool FieldLightRegistryOwner::readString(uint32_t address,char* output,uint32_t capacity,uint32_t& length) const{
@@ -62,7 +72,7 @@ bool FieldLightRegistryOwner::selected(unsigned& group) const{
  uint32_t active=0,count=0,array=0;
  if(!memory_.readWord(ActiveGroup,active))return false;
  group=active==1?1:0;
- return memory_.readWord(Work+DescriptorBytes*group,count) && count==Capacity &&
+ return memory_.readWord(Work+DescriptorBytes*group,count) && count==Capacity && bankAddress(group) &&
   memory_.readWord(Work+DescriptorBytes*group+WordBytes,array) && array==bankAddress(group);
 }
 FieldLightRegistryServices FieldLightRegistryOwner::services(){
@@ -76,7 +86,27 @@ FieldLightRegistryServices FieldLightRegistryOwner::services(){
   auto& o=*static_cast<FieldLightRegistryOwner*>(user);
   if(heap || size!=BankBytes || o.allocations_>=o.banks_.size())return false;
   const auto index=o.allocations_;auto* bytes=reinterpret_cast<uint8_t*>(o.banks_[index].data());
-  if(!o.zeroed_[index]){std::memset(bytes,0,BankBytes);o.zeroed_[index]=true;}
+  if(o.heap_.allocate){
+   if(!o.allocated_[index]){
+    uint32_t address=0;
+    if(!o.heap_.allocate(o.heap_.user,heap,size,address))return false;
+    o.bankAddresses_[index]=address;o.allocated_[index]=true;
+   }
+   if(!o.current())return false;
+   const uint32_t address=o.bankAddress(index);
+   // A completed no-fit allocation is an original null return, never a retry.
+   if(!address){out=0;++o.allocations_;return true;}
+   if(address&(CacheLineBytes-1))return false;
+   if(!o.isolated_[index]){
+    std::vector<uint8_t> source;
+    if(!o.memory_.extractRam(address,size,source))return false;
+    std::memcpy(bytes,source.data(),size);o.isolated_[index]=true;
+   }
+   if(!o.bankMapped_[index]){
+    if(!o.map(address,bytes,size))return false;
+    o.bankMapped_[index]=true;
+   }
+  }else if(!o.zeroed_[index]){std::memset(bytes,0,BankBytes);o.zeroed_[index]=true;}
   if(!o.heap_.flush(o.heap_.user,bytes,size) || !o.current())return false;
   out=o.bankAddress(index);++o.allocations_;return true;
  };
@@ -229,7 +259,7 @@ std::optional<uint32_t> FieldLightRegistryOwner::find(FieldLightRequest& request
 }
 const MapLightRecord* FieldLightRegistryOwner::record(uint32_t address) const{
  if(!current() || !ready_ || pending())return nullptr;
- for(unsigned group=0;group<2;++group)if(address>=bankAddress(group) && address<bankAddress(group)+BankBytes && (address-bankAddress(group))%RecordBytes==0)return &banks_[group][(address-bankAddress(group))/RecordBytes];
+ for(unsigned group=0;group<2;++group)if(bankAddress(group) && address>=bankAddress(group) && address<bankAddress(group)+BankBytes && (address-bankAddress(group))%RecordBytes==0)return &banks_[group][(address-bankAddress(group))/RecordBytes];
  return nullptr;
 }
 const MapLightRecord* FieldLightRegistryOwner::preset(unsigned index) const{return current() && ready_ && !pending() && index<presets_.size()?&presets_[index]:nullptr;}

@@ -20144,3 +20144,55 @@ Retain owner through native room/checkpoint handoff. Whole source Logo platform,
 Mario Main, shared typed/raw pouch lifecycle, field-to-battle preparation/post,
 actual battle return and target hardware performance remain open. Constructor
 readiness alone does not prove a full Crump opening/battle/return. Goal active.
+
+
+### Original heap-backed field light allocation admission (2026-11-07)
+
+FieldLightRegistryOwner now supports actual original heap0 allocation returns.
+Dynamic bind reserves private scratch only; source lightInit publishes each
+count, requests its real3072-byte bank and publishes the returned guest pointer
+in original order. The owner preserves original payload bytes and SDK headers,
+isolates stationary aligned native backing at the unchanged guest address, and
+flushes that backing before pointer publication. Held flushes retain completed
+allocation/extraction/mapping effects without reallocating or clearing again.
+Fixed bank addresses remain an explicit fixture option. A pure optional backend
+current predicate admits process/SDK lifetime; exact mapping records preserve
+replacement RAM at teardown. Null returns complete their actual source calls;
+nulls retained over backend ownership loss do not advance allocation indices.
+Source Init can finish presets with null banks; selected-bank consumers and
+record(0) reject the missing arrays. No normal Game light/map activation is
+claimed. [Contract](behavior/field/NATIVE_LIGHT_REGISTRY_OWNER.md).
+
+Validation uses committed42a45e4e plus these scoped changes in an isolated copy,
+preserving concurrent work/staging. Full make test exits0: 628/628 C++
+(78.10s), 276/276 Python (70.473s), zero skips. The expanded owner fixture uses
+actual NativeFieldAnimation cold-process heap0 and original eventHeapAllocate;
+it checks descriptor order, SDK header/list identity, distinct actual bank
+addresses, retained payload mutation, caller identity, provider loss/recovery,
+foreign mapping teardown and real exhaustion, including a null result completed
+while the backend becomes unavailable. Focused owner test passes. Asset-ready
+SOUNDTRACK=gamecube compiles476 recipes; assets-check passes476. Native make all
+(-o assets-ready after explicit asset preparation, -j4) exits0. Fresh isolated
+60-second Azahar smoke exits0; inspected capture shows original opening book
+and dialogue. No user emulator profile/save changed. Existing compiler warnings
+remain. Normal startup smoke does not exercise this new dynamic branch.
+
+Initial default asset preparation stopped at the absent private Switch soundtrack
+library. The successful rerun uses the original GameCube soundtrack option.
+Early focused attempts used stale cached products lacking the now-committed Logo
+TPL and failed cold creation; all final tests ran after full476-recipe rebuild.
+No new original import, editable asset change, ISO/cache/pack/binary commit or
+story/dialogue change. Exact source, product, private-input, binary, log and
+capture hashes: artifacts/shared-map-light-allocation-validation-manifest.json.
+
+Remaining: build NativeMapProcess over the ready shared camera/shadow/UI/animation
+VM, real primary map-pool SDK1 allocation and actual map Work allocation; supply
+DVD/cache/renderer fence providers and retain first GX capture boundaries without
+invented lengths or G0 readiness. Native C3D_FrameSync is a VBlank wait, not GPU
+queue completion; the pre-load fence needs a renderer-owned outside-frame Begin/
+End scope. Preserve map pending through Game transfer/pause/preclock guards.
+Full prologue, original runtime/pixel parity and physical hardware performance
+remain unverified. Read-only handoffs: artifacts/shared-map-allocation-review.md,
+artifacts/native-shared-map-render-handoff.md and
+artifacts/shared-map-light-allocation-next.md. Documentation inbox breadcrumb
+added to EVT-01; its parent request remains open.

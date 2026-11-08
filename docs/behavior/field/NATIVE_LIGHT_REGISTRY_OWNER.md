@@ -83,3 +83,43 @@ physical VM alias identity, caller pinning, actual original five-light outputs,
 later-row repair, fresh count termination and live SDK constants. ISO-backed
 Python checks reproduce both editable imports and preserve existing edits.
 Build, emulator and snapshot details are recorded in [progress](../../PROGRESS.md).
+
+
+## Original heap allocation admission (2026-11-07)
+
+The owner now accepts an optional `FieldLightHeapServices::allocate` provider.
+In that mode `allocationBase` reserves only private scratch; neither bank is
+preassigned or mapped during bind. Each reached original allocation calls the
+provider with heap0 and3072 bytes. The provider completes original `__memAlloc`,
+including its original SDK header/free-list/allocated-list effects and requested
+payload clear/cache operations. False retains that call without consuming an
+allocation; true returns the exact original guest address, including null.
+
+The owner extracts a nonnull payload from owned VM RAM without changing its
+guest address or SDK header, copies its existing bytes into the stationary
+aligned record bank, and maps that exact bank back at the returned address.
+Native cache flushing of this stable backing precedes pointer publication. A
+held flush retains allocation, extraction and mapping independently; it never
+repeats the original allocation or clears source mutations made during the
+hold. The former fixed-bank services remain available for explicit fixtures.
+
+An optional pure backend `current` predicate checks process/SDK lifetime before
+source acknowledgement and at each owner admission, including raw-borrow
+identity checks. It must not recurse through this owner. Mapping records retain
+address, extent and backing for conditional teardown in either allocation mode.
+No callback or consumer may outlive its backend or VM. No SDK free or recovery
+allocation is fabricated at teardown.
+
+Original lightInit accepts both null returns and can still finish its preset
+initialization. `ready()` therefore reports completed source initialization and
+current ownership; it does not prove that both arrays exist. Native selected-bank
+operations reject null pointers, and `record(0)` returns no record. An allocation
+that returns null just as backend ownership disappears remains the same retained
+null call until ownership recovers; its bank index advances only on acknowledgement.
+
+The host regression uses actual `NativeFieldAnimation` cold-process heap0 and
+`eventHeapAllocate`, verifies source descriptor pointer order, unchanged SDK
+headers and allocation-list membership, distinct header-separated bank addresses,
+retained flush mutations, request identity, backend loss/recovery, replacement
+mapping teardown and real no-fit returns. This enables the shared map integration;
+normal Game light/map ownership and GX capture are still separate pending work.
