@@ -5845,3 +5845,22 @@ artifacts/field-shadow-init-review.md. Normal activation still requires real
 shared heap0/smart arena and GX/cache composition. First cold smart allocation
 must execute smartAutoFree(3), not a simplified NativeFileCache header. Complete
 source Init is not a native GPU residency or full shadow rendering receipt.
+
+### Whole effect texture setup available (2026-11-07)
+
+[Primary/N64 setup](../behavior/effect/NATIVE_EFFECT_TEXTURE_SETUP.md) now
+includes the mandatory effTexSetupN64 child and both independent original DVD
+callbacks on the shared native VM/heap. Source body/data/assets are freshly
+verified. Primary readiness is not whole setup completion or callback delivery.
+The sole original primary caller is seq_logoExit after the original environment setup8019df84 and before
+marioPoseInit; normal activation still needs that actual parent/preceding owner.
+Actual effect update/GX/3DS draw/audio/retirement remain implementation work with
+existing contracts. No duplicate documentation request is filed for known bodies.
+
+
+The [preceding environment owner](../behavior/display/SOURCE_ENVIRONMENT_TEXTURE_STARTUP.md)
+is now source-documented: envInit8019e09c differs from envTexSetup8019df84.
+Texture setup preserves readiness and reads logical rather than rounded DVD
+length; its callback captures the handle before palette. Implement these exact
+bodies/storage before original normal sequence activation. No undocumented
+local child remains in this bounded audit, so no duplicate request is needed.

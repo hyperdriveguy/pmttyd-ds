@@ -232,3 +232,11 @@ it across room/checkpoint transitions. This advances CO-03 prerequisites. Actual
 reaction EVT binding, primary textures, callback updates, draw/audio consumers
 and retirement remain required; the full into-battle and out-of-battle story
 chain is still open. Startup and fixture success do not close that acceptance.
+
+
+[Whole primary/N64 effect texture setup](../effect/NATIVE_EFFECT_TEXTURE_SETUP.md)
+is now available on the actual shared native process with original banks, real
+source heap allocations and independent DVD/unpack/completion ownership. It
+includes the mandatory N64 child. Normal original sequence activation, reaction
+EVT/Main/draw/audio binding and full battle/result/return remain open. Raw bank
+availability and callback fixture success do not close CO-03/CO-09 presentation.

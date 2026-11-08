@@ -40,7 +40,7 @@ in [ordinary Mario pose selection](../overworld/OVERWORLD_MARIO_ORDINARY_POSE_SE
 
 A census of all loaded DOL text direct linked branches to8005ba50 finds one:
 `seq_logoExit`8008746c/44 at80087490. Complete order is fontmgrTexSetup80077bdc,
-windowTexSetup8007fbd8, fadeInit80013aa4, iconInit8001b694, envInit8019df84,
+windowTexSetup8007fbd8, fadeTexSetup80013aa4, iconTexSetup8001b694, envTexSetup8019df84,
 effTexSetup8005ee0c, marioPoseInit, then fileFree8018a260 of the logo file
 handle. This does not exclude REL/indirect calls; MarioInit does not directly
 call marioPoseInit. A native bootstrap must supply actual initialized pose

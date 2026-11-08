@@ -1547,3 +1547,8 @@ retain explicit provider and process-ownership frontiers.
 - [Native original effect process](effect/NATIVE_EFFECT_PROCESS.md): shared VM bank initialization, source driver visits, filename/cache ownership and exact-context retirement.
 
 - [Native complete source shadow process initialization](display/NATIVE_SOURCE_SHADOW_PROCESS_INITIALIZATION.md): retained Init, exact BSS/texture owners and source sizing; genuine backend composition remains required.
+
+- [Original primary/N64 effect texture setup](effect/NATIVE_EFFECT_TEXTURE_SETUP.md): whole installers, independent callbacks and actual shared-process DVD/heap ownership.
+
+
+- [Original environment texture startup](display/SOURCE_ENVIRONMENT_TEXTURE_STARTUP.md): distinct envInit/TexSetup, logical DVD lengths and handle-first callback; implementation frontier.

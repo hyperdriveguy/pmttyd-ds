@@ -19522,3 +19522,67 @@ native cache services, then activate full source shadow initialization before ma
 admission. Genuine camera initialization, shadow rendering/material/GX capture,
 Game/EVT epochs, Crump return/afterbattle, full prologue and physical hardware
 fidelity/performance remain unfinished.
+
+### Original primary/N64 effect texture ownership (2026-11-07)
+
+Committedeab2a2ee adds complete retained effTexSetup8005ee0c/0x114, mandatory
+effTexSetupN64801d7910/0x110 and both independent original completion callbacks.
+The shared whole UnpackTexPalette preserves source relocation and marker writes.
+Actual NativeEffectProcess exposes beginTextures/pumpTextures/texturesReady over
+the same UI/animation VM and real source heap0. Five new initialized literal
+ranges are admitted; existing manager/N64/root/prefix/archive owners are borrowed
+with backing checks. Real VM-owned152-byte DVD entries and actual heap palettes
+retain transfers, progress, userdata, source callbacks and close flags. Bounded
+native delivery uses a synchronous raw-memory borrow; no borrowed pointers escape.
+
+Imported unchanged primary e/us/effect.tpl266784 bytes/118 images and
+N64 e/us/effect_n64.tpl235776 bytes/151 images into an empty destination, with
+original path/offset/hash/licensing provenance. They differ from effect_us.tpl.
+Three normal manifest recipes compile the memory pack and copy both raw TPLs.
+Native backend admits actual inactive four-descriptor arcOpen exhaustion and
+original US direct-DVD paths. Active archives and real JP paths hold for their
+actual providers; no fake US substitution or readiness is supplied. Review fixed
+readiness that could hide pending native jobs and added borrowed archive/state
+identity checks. Actual job completion and source words are both required;
+busy independently tracks pending source setup and queued jobs.
+
+Validation: make test exits0 on the frozen candidate:604/604 C++ tests in133.09s,
+268/268 Python tests in45.371s. Final make all exits0 with SOUNDTRACK=gamecube
+and -o assets-ready after explicit compilation of nine delta recipes (three owned
+by this feature, six from its committed base). Corrected focused native/portable
+suite passes2/2 in3.98s; full formatted gate also passes both. Fresh read-only ISO
+import roundtrip matches all four files and refuses nonempty destinations.
+Source review covers both complete installers/callbacks and exact child/store
+order. Final markdown check:1700 files, zero broken links. Isolated45-second
+fresh-save Azahar smoke exits0; inspected capture reaches original opening book
+and dialogue without native exception. User profile/saves were untouched.
+
+All4877 tested source files match commiteab2a2ee exactly. Archived source,
+ELF/3DSX,2232 RomFS product hashes and evidence hashes are pinned in
+artifacts/effect-primary/accepted/validation-manifest.json and rechecked after
+all tests. Concurrent shadow-process commit08df716f is outside this exact tested
+cohort. Existing compiler/Pillow warnings remain; no skipped gate is claimed.
+
+Limitations: normal Game does not yet automatically invoke this texture API.
+The original sole direct parent is seq_logoExit8008748c, after envTexSetup and
+before marioPoseInit; complete original sequence activation still needs its
+preceding owners. Effect Main32/reaction EVT/GX/3DS residency/draw/audio and
+retirement are not yet composed. Boot and source fixture success do not prove
+rendered Crump reactions, the complete battle/result/teardown/field return or
+276-command afterbattle, original pixel/numerical parity or physical New2DS XL
+performance. The full goal remains incomplete.
+
+Next source frontier is now documented in display/SOURCE_ENVIRONMENT_TEXTURE_STARTUP:
+actual envInit8019e09c separately clears two work banks and both globals;
+envTexSetup8019df84 clears only palette, preserves ready, allocates rounded size
+but reads LOGICAL length, and its callback captures handle before palette.
+Original env.tpl37248 bytes/11 images is pinned but not imported/implemented yet.
+Implement those exact shared-VM owners with a nonmultiple32 read-length fixture,
+then compose normal sequence activation and actual fukidashi update/draw/audio.
+Existing pose-caller prose incorrectly named texture functions as initializers;
+corrected fadeTexSetup/iconTexSetup/envTexSetup identities using fresh source and
+original symbols. No undocumented local child remains in this bounded frontier;
+EVT-01 records implementation work without filing a duplicate unknown request.
+Continue genuine setup2 gameplay/result/export/field return and original
+postbattle crowd/dialogue/party/map transition, followed by fresh/resume scene
+captures and actual hardware budgets.

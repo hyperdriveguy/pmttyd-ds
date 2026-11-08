@@ -75,9 +75,7 @@ eight data spans and four direct calls. Private evidence is under
 `artifacts/effect-process/`; emulator boot and host tests do not establish original
 pixel parity or physical New2DS XL performance.
 
-The next concrete owner is whole-source effTexSetup8005ee0c/0x114 and its
-completion callback8005efa8/0x48, staging primary `e/us/effect.tpl`266784 bytes
-and setting actual manager+8/+c through original archive/DVD/unpack calls. See
-[the existing texture contract](FIELD_ITEM_GET_TYPE6_BANK_UPDATE_AND_DRAW.md);
-these identities are documented and need implementation rather than a duplicate
-request in the documentation inbox.
+Whole primary/N64 texture setup and both callbacks are now available through
+[the retained native texture owner](NATIVE_EFFECT_TEXTURE_SETUP.md). Actual
+normal logo-sequence activation, effect Main/render/audio/actor/camera providers
+and the full Crump battle/result/field-return chain remain open.

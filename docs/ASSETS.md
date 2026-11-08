@@ -4398,3 +4398,19 @@ pack `source-shadow-literals.pmevt`. No runtime shadow BSS, heap allocation or
 generated ramp is imported. Nintendo/Intelligent Systems retain original rights;
 local source tracking grants no redistribution license. Per-span provenance and
 licensing are recorded beside the asset.
+
+### Original primary and N64 effect banks
+
+`assets/original/effects/primary/` tracks unchanged `e/us/effect.tpl`266784
+bytes/118 images and `e/us/effect_n64.tpl`235776 bytes/151 images, plus five exact
+initialized DOL literal ranges in memory.json. These banks are distinct from the
+language `effect_us.tpl` library. `tools/import_effect_primary_assets.py` verifies
+the original source bodies and data, opens the ISO read-only and refuses nonempty
+destinations. Normal manifest recipes compile `effect-primary/memory.pmevt`
+and copy both TPLs into `effect-primary/`. No pixels are resampled or generated.
+Runtime source UnpackTexPalette relocates actual heap-owned copies; relocated
+outputs are never imported as original assets. Existing managers/state/root and
+archive descriptors are borrowed rather than reimported. Per-asset source paths,
+ISO offsets, hashes, conversion and retained Nintendo/Intelligent Systems rights
+are recorded in provenance.json; no redistribution license is granted. Checked-in
+edits remain authoritative; ISO, caches and compiled packs stay outside history.
