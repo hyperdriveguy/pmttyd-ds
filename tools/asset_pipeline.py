@@ -142,10 +142,10 @@ def make_atlas(source, root, stage):
         tile = Image.new('RGBA', (w + 2 * padding, h + 2 * padding))
         tile.paste(sprite, (padding, padding))
         if padding:
-            tile.paste(sprite.crop((0, 0, 1, h)).resize((padding, h)), (0, padding))
-            tile.paste(sprite.crop((w - 1, 0, w, h)).resize((padding, h)), (padding + w, padding))
-            tile.paste(tile.crop((0, padding, tile.width, padding + 1)).resize((tile.width, padding)), (0, 0))
-            tile.paste(tile.crop((0, padding + h - 1, tile.width, padding + h)).resize((tile.width, padding)), (0, padding + h))
+            tile.paste(sprite.crop((0, 0, 1, h)).resize((padding, h), Image.Resampling.NEAREST), (0, padding))
+            tile.paste(sprite.crop((w - 1, 0, w, h)).resize((padding, h), Image.Resampling.NEAREST), (padding + w, padding))
+            tile.paste(tile.crop((0, padding, tile.width, padding + 1)).resize((tile.width, padding), Image.Resampling.NEAREST), (0, 0))
+            tile.paste(tile.crop((0, padding + h - 1, tile.width, padding + h)).resize((tile.width, padding), Image.Resampling.NEAREST), (0, padding + h))
         image.paste(tile, box[:2])
         frames[name] = {'rect': [x, y, w, h], 'uv': [x / width, 1 - (y + h) / height, (x + w) / width, 1 - y / height]}
     if not frames:

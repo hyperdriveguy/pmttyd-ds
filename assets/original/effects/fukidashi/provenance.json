@@ -1,0 +1,78 @@
+{
+  "source": {
+    "source_disc": "G8ME01",
+    "source_path": "e/us/effect.tpl",
+    "source_offset": 944698640,
+    "size": 266784,
+    "sha256": "3b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b",
+    "license": "Local original-game asset; not a replacement license"
+  },
+  "assets": [
+    {
+      "name": "bubble",
+      "source": "e/us/effect.tpl",
+      "source_sha256": "3b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b",
+      "texture_index": 4,
+      "size": [
+        32,
+        64
+      ],
+      "format": 2,
+      "palette_offset": 0,
+      "descriptor_hex": "004000200000000200004660000000020000000000000001000000010000000000000000",
+      "rgba_sha256": "d9f93edfc813502e37de82fc89af7fc8314683ca1ebe01ce836151fdac5bbfe5",
+      "file_sha256": "0b387ddf9fed10a179222105381e621c2e5b97136ed95b0033bbba2b98e0cee9",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "shadow",
+      "source": "e/us/effect.tpl",
+      "source_sha256": "3b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b",
+      "texture_index": 5,
+      "size": [
+        32,
+        64
+      ],
+      "format": 0,
+      "palette_offset": 0,
+      "descriptor_hex": "004000200000000000004e60000000020000000000000001000000010000000000000000",
+      "rgba_sha256": "93afdf349026fc4c9d4f4f9900b702ffd5f226974700946d63cb55ea1d2619a4",
+      "file_sha256": "bb15ab563b56878dd58553b5c652a7602b406bd374ee279d134ed8f0660bfa9d",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "exclamation",
+      "source": "e/us/effect.tpl",
+      "source_sha256": "3b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b",
+      "texture_index": 6,
+      "size": [
+        96,
+        32
+      ],
+      "format": 0,
+      "palette_offset": 0,
+      "descriptor_hex": "002000600000000000005260000000000000000000000001000000010000000000000000",
+      "rgba_sha256": "afc9ff2877980d8e696d94bb44fa68f0638d360027bc2b81a03c735977a2eb76",
+      "file_sha256": "0b8809218696c3cbba1d84fba7959572b1d2796634aafef6307f4b3a2d64a35d",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    },
+    {
+      "name": "question",
+      "source": "e/us/effect.tpl",
+      "source_sha256": "3b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b",
+      "texture_index": 7,
+      "size": [
+        128,
+        48
+      ],
+      "format": 0,
+      "palette_offset": 0,
+      "descriptor_hex": "003000800000000000005860000000000000000000000001000000010000000000000000",
+      "rgba_sha256": "9f4acc4fe567e3fcaca6cbd5c2626aa00e134b62dde88a643dc9be63a45a2c89",
+      "file_sha256": "269775ae4eab848196594892fc1a753d8c3c439befe0dff7fd41b819c5f8168d",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+    }
+  ],
+  "conversion": "Unscaled original decoded RGBA; atlas adds two edge-extruded texels. Original descriptor/UV animation semantics remain separate.",
+  "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted"
+}

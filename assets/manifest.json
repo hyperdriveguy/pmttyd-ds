@@ -1,6 +1,14 @@
 {
   "schema": 1,
   "assets": [
+    {
+      "id": "original/effects/fukidashi",
+      "kind": "atlas",
+      "source": "assets/original/effects/fukidashi/atlas.json",
+      "output": "fukidashi.t3x",
+      "license": "Nintendo/Intelligent Systems original game asset; no redistribution license granted",
+      "format": "rgba8"
+    },
 {
       "id": "original/maps/harbor-source",
       "kind": "event",

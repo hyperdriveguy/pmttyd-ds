@@ -1,0 +1,12 @@
+{
+  "source": "/home/carson/Documents/blender_tests/pm-port/artifacts/crump-fukidashi-import/effect.tpl",
+  "sha256": "3b62850fe75afb95eebb9fc240e20204d5ed320fba0fc956729f28405c2c789b",
+  "index": 7,
+  "gx_format": 0,
+  "dimensions": [
+    128,
+    48
+  ],
+  "conversion": "GX tiled to RGBA; no resize",
+  "license": "Inherited from source; local original assets excluded from source history"
+}

@@ -1,0 +1,41 @@
+{
+  "size": [
+    256,
+    128
+  ],
+  "padding": 2,
+  "frames": [
+    {
+      "name": "bubble",
+      "source": "assets/original/effects/fukidashi/bubble.png",
+      "position": [
+        2,
+        2
+      ]
+    },
+    {
+      "name": "shadow",
+      "source": "assets/original/effects/fukidashi/shadow.png",
+      "position": [
+        38,
+        2
+      ]
+    },
+    {
+      "name": "exclamation",
+      "source": "assets/original/effects/fukidashi/exclamation.png",
+      "position": [
+        74,
+        2
+      ]
+    },
+    {
+      "name": "question",
+      "source": "assets/original/effects/fukidashi/question.png",
+      "position": [
+        2,
+        70
+      ]
+    }
+  ]
+}

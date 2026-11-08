@@ -10,7 +10,25 @@ namespace ttyd {
 // 0 Crump, 1 Mario, 2 Goombella. PMHTUV01 sidecars admit UV scales1/2/4/8
 // with exact EOF; atlas padding scale is independent of world size.
 bool Renderer::loadTutorialPresentation() {
-    if(tutorialReady)return true;
+    // The scene cache owns its maps/actors, but ordinary Mario's atlas is shared
+    // with combat and retired independently on field entry. Reacquire that
+    // lease before admitting a cached scene; tutorialReady alone is insufficient.
+    auto loadMarioAtlas=[&] {
+        if(!trioMarioAnimations || !trioMarioAnimations->bank){frontFailure="Original battle Mario animations unavailable";return false;}
+        if(trioMarioTexture.imported)return true;
+        FILE* file=std::fopen("romfs:/trio-attack-mario.t3x","rb");
+        if(!file){frontFailure="Scene actor texture missing: romfs:/trio-attack-mario.t3x";return false;}
+        trioMarioTexture.imported=Tex3DS_TextureImportStdio(file,&trioMarioTexture.texture,nullptr,false);
+        std::fclose(file);
+        if(!trioMarioTexture.imported){frontFailure="Scene actor texture import failed: romfs:/trio-attack-mario.t3x";return false;}
+        C3D_TexSetFilter(&trioMarioTexture.texture,GPU_LINEAR,GPU_LINEAR);
+        C3D_TexSetWrap(&trioMarioTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
+        return true;
+    };
+    if(tutorialReady){
+        if(trioMarioTexture.imported)return true;
+        C3D_FrameSync();return loadMarioAtlas();
+    }
     C3D_FrameSync();
     // Field event and collision ownership stay suspended while source setup2
     // owns battle presentation. GPU rooms belong to only one native scene.
@@ -37,16 +55,7 @@ bool Renderer::loadTutorialPresentation() {
     // Jump/guard/victory clips already belong to the ordinary battle bank.
     // Preserve the checked-in tutorial clips and reuse its matching atlas for
     // missing Mario clips; mixing that bank with the tutorial atlas corrupts UVs.
-    if(!trioMarioAnimations || !trioMarioAnimations->bank){release();return false;}
-    if(!trioMarioTexture.imported){
-        FILE* file=std::fopen("romfs:/trio-attack-mario.t3x","rb");
-        if(!file){release();return false;}
-        trioMarioTexture.imported=Tex3DS_TextureImportStdio(file,&trioMarioTexture.texture,nullptr,false);
-        std::fclose(file);
-        if(!trioMarioTexture.imported){release();return false;}
-        C3D_TexSetFilter(&trioMarioTexture.texture,GPU_LINEAR,GPU_LINEAR);
-        C3D_TexSetWrap(&trioMarioTexture.texture,GPU_CLAMP_TO_EDGE,GPU_CLAMP_TO_EDGE);
-    }
+    if(!loadMarioAtlas()){release();return false;}
     tutorialReady=true;return true;
 }
 // Pose endpoints use milliseconds*.06 (60Hz source sample clock). Notify

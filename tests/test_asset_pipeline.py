@@ -96,6 +96,24 @@ class AssetPipelineTests(unittest.TestCase):
             source.write_text(json.dumps(doc))
             with self.assertRaises(ValueError):pipeline.make_atlas(source,root,root)
 
+    def test_atlas_extrusion_retains_transparent_and_partial_alpha_rgb(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            sprite=Image.new('RGBA',(2,2))
+            sprite.putdata([(255,255,255,0),(34,34,34,34),
+                            (19,71,131,126),(3,5,7,255)])
+            sprite.save(root/'sprite.png')
+            source=root/'atlas.json'
+            source.write_text(json.dumps(dict(size=[8,8],padding=2,
+                frames=[dict(name='a',source='sprite.png',position=[2,2])])))
+            image,_=pipeline.make_atlas(source,root,root)
+            with Image.open(image) as atlas:
+                self.assertEqual(atlas.crop((2,2,4,4)).tobytes(),sprite.tobytes())
+                self.assertEqual(atlas.getpixel((0,0)),(255,255,255,0))
+                self.assertEqual(atlas.getpixel((5,0)),(34,34,34,34))
+                self.assertEqual(atlas.getpixel((0,5)),(19,71,131,126))
+                self.assertEqual(atlas.getpixel((5,5)),(3,5,7,255))
+
     def test_audio_canonical_header_loop_and_one_shot(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory);source=root/'source.wav';target=root/'target.wav'
