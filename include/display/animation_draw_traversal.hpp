@@ -4,6 +4,8 @@
 namespace ttyd {
 // kind 40/80(hex) identifies source publication, not native draw pass.
 struct AnimationGroupPublication {uint32_t kind=0,group=0,destination=0;BattleActMatrix matrix{};};
+// Typed rendering metadata includes pass/model,key;raw renderProc consumes
+// only shape and obtains its actual work/pass/modeling owners through the VM.
 struct AnimationShapeRequest {int32_t shape=-1;uint32_t key=0,pass=0;BattleActMatrix model{};};
 struct AnimationDrawTraversalServices {
     void* user=nullptr;bool (*matrix)(void*,BattleAudienceMatrixRequest&)=nullptr;
@@ -22,5 +24,7 @@ struct AnimationDrawTraversalCursor {
     bool active=false;uint32_t pending=0;BattlePoseInnerContext context;
     std::vector<BattleActMatrix> stack;std::vector<AnimationDrawFrame> frames;
 };
+// Providers/context are caller-owned across false;this cursor is not a producer
+// lock or a lifetime-generation proof for arbitrary external pool mutation.
 bool resumeAnimationDrawTraversal(BattlePosePool&,const BattlePoseInnerContext&,const AnimationDrawTraversalServices&,AnimationDrawTraversalCursor&);
 }

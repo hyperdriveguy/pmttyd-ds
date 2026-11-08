@@ -8,6 +8,8 @@ struct AnimationTPLImage {
     uint32_t index=0,imageHeader=0,paletteHeader=0,data=0,format=0,wrapS=0,wrapT=0,minFilter=0,magFilter=0,paletteData=0,paletteFormat=0;
     uint16_t width=0,height=0,paletteCount=0;float bias=0;uint8_t edge=0,minLOD=0,maxLOD=0;
 };
+// Retains metadata/file-offset projections only. Raw TPL pixel/palette bytes
+// used during read are temporary;data/paletteData are not owned GPU pointers.
 class AnimationTextureResource {
 public:
     static std::shared_ptr<const AnimationTextureResource> load(const char*);
@@ -36,6 +38,8 @@ struct AnimationTextureCursor {
     AnimationTextureRequest request;BattleAudienceMatrixRequest math;
     std::array<AnimationNodeOperation,12> operations{};std::array<BattleActMatrix,8> matrices{};
 };
+// Caller keeps this typed pose/resource and backend context stable through
+// pending work. A completed texture helper is not a fan draw or GPU fence.
 bool resumeAnimationTexture(const BattlePose&,uint32_t draw,const AnimationTextureServices&,AnimationTextureCursor&);
 // Native whole-image atlas identity; use the selected converted package's
 // palette, never a texture-name-only match across differently packed atlases.

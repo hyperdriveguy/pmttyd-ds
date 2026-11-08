@@ -1,8 +1,10 @@
 #include "platform.hpp"
 #include <cmath>
 namespace ttyd {
-// Resource pointer identity selects one of the three actual resident actor
-// banks. Equal names or a successful CPU decode do not imply GPU ownership.
+// Resource pointer identity selects the explicitly retained resident actor
+// package. Equal names or a successful CPU decode do not imply GPU ownership.
+// The listed resource package must match its own resident atlas/UV crop.
+// Scene/room GPU lifetime barriers still apply after CPU helper completion.
 Renderer::Texture* Renderer::finishingAnimationTextureOwner(const std::shared_ptr<const BattlePoseResource>& resource,float& uvScale){
     if(!resource)return nullptr;
     if(resource==trioMarioAnimations){uvScale=trioMarioUVScale;return &trioMarioTexture;}
@@ -30,6 +32,9 @@ bool Renderer::finishingAnimationTexture(const AnimationTextureRequest& r){
         finishingTextureLODReady=true;return true;
     // GXLoadTexObj: validate atlas/cell before logical texture publication.
     // Restore the prior logical atlas if the GPU-state owner refuses the bind.
+    // This checks converted cell/package identity,not ownership of original
+    // TPL bytes. A rejected GPU bind restores only the previous logical atlas;
+    // native texture filter/wrap state has already been set on the resident object.
     case 0x802b7880:{
         if(!finishingTextureObjectReady || !finishingTextureLODReady || !r.pose || !r.pose->resource || r.image.index!=finishingTextureObject.image.index)return false;
         const auto cell=animationTextureCell(r);if(!cell)return false;

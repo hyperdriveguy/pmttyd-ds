@@ -38,6 +38,9 @@ bool AnimationTextureResource::read(FILE* file){
     }
     return true;
 }
+// Native atlases retain logical 1024-wide UVs at full/half width (1024/512).
+// Crops use exact vertical ratios 1/2/4/8; arbitrary image dimensions are not
+// converted-package identity,even if they could be sampled by the GPU.
 bool animationAtlasDimensions(uint32_t width,uint32_t height,float uvScale){
     return (width==512 || width==1024) && (uvScale==1 || uvScale==2 || uvScale==4 || uvScale==8) && height==width/uvScale;
 }
@@ -49,11 +52,16 @@ std::optional<uint16_t> animationTextureCell(const AnimationTextureRequest& r){
     const auto* p=resource.bank->pose(resource.names[selected].c_str());if(!p || r.slot>=p->textures.size() || r.state>255)return {};
     const auto& d=*resource.draw;
     if(r.slot>=d.word(0x130) || d.word(d.word(0x194)+8*r.slot)+r.state!=r.descriptor || r.descriptor>=d.word(0x134) || (d.word(d.word(0x198)+64*r.descriptor+8)!=0 || d.word(d.word(0x198)+64*r.descriptor+4)!=r.image.index))return {};
+    // Native logical grid is 8x8 cells;ffff is an unavailable palette entry,
+    // not original descriptor0 fallback. State indexes the package's 256 rows.
     const auto cell=p->textures[r.slot].cells[r.state];return cell<64?std::optional<uint16_t>(cell):std::nullopt;
 }
 // Two ordered walks: first load original textures, then coordinate matrices.
 // Slots traverse reverse draw order. Keep two original TPL image queries; the
 // palette decision is captured before the second getter and must not be merged.
+// This typed resource adapter pins pose/resource but does NOT compare changed
+// draw/services on resume. Caller retains the same request/providers/lifetime.
+// It does not replace the raw VM source texture owner or its admission graph.
 bool resumeAnimationTexture(const BattlePose& pose,uint32_t draw,const AnimationTextureServices& s,AnimationTextureCursor& c){
     if(!c.active){if(!pose.resource || !pose.resource->draw)return false;c={};c.active=true;c.pose=&pose;c.resource=pose.resource;c.draw=draw;const auto& d=*c.resource->draw;
         const auto first=d.word(0x19c);if(draw<first || (draw-first)%108 || (draw-first)/108>=d.word(0x138)){c.pending=0x8003dcfc;return false;}
@@ -62,6 +70,8 @@ bool resumeAnimationTexture(const BattlePose& pose,uint32_t draw,const Animation
     const auto& d=*c.resource->draw;
     auto next=[&](uint32_t p){c.queued=false;c.phase=p;};
     auto send=[&](uint32_t fn){if(!c.queued){c.request={};auto& r=c.request;r.function=fn;r.coordinate=c.j;r.slot=c.slot;r.descriptor=c.index;r.state=c.state;r.image=c.image;r.pose=&pose;
+            // Negative wrap word keeps TPL sampler. Otherwise bits0/1 select
+            // S/T repeat;bits2/3 force S/T mirror,overriding repeat (else clamp).
             const bool original=int32_t(c.overrideWrap)<0;r.wrapS=original?c.image.wrapS:(c.overrideWrap&4)?2:(c.overrideWrap&1);r.wrapT=original?c.image.wrapT:(c.overrideWrap&8)?2:((c.overrideWrap>>1)&1);
             if(fn==0x802b4e04)r.arguments={int32_t(c.j),1,int32_t(c.j+4),int32_t(c.mask?30+3*c.j:60),0,125,0};
             if(fn==0x802ba3d0){r.arguments={int32_t(30+3*c.j),1};r.matrix=c.matrices[c.result];}
@@ -75,6 +85,10 @@ bool resumeAnimationTexture(const BattlePose& pose,uint32_t draw,const Animation
         {const auto state=animationOutputByte(pose,true,c.slot);if(!state)return false;c.state=*state;}c.index=d.word(d.word(0x194)+8*c.slot)+c.state;c.overrideWrap=d.word(d.word(0x194)+8*c.slot+4);
         if(int32_t(c.index)<0 || c.index>=d.word(0x134)){c.pending=0x8026a2a8;return false;} // Diagnostic/fallback owner remains explicit.
         c.phase=d.word(d.word(0x198)+64*c.index+8)==0?1:10;break;
+    // TWO reached TEXGet80037b5c calls are distinct. First captures palette
+    // presence;second supplies retained image payload. CI requests InitTlut
+    // 802b78d4,InitTexObjCI74fc,LOD7544,LoadTlut790c,LoadTexObj7880;
+    // ordinary uses InitTexObj72b0,LOD,LoadTexObj. Functions share802b base.
     case 1:c.pending=0x80037b5c;if(!s.get || !s.get(s.user,pose,d.word(d.word(0x198)+64*c.index+4),c.image))return false;c.ci=c.image.paletteHeader!=0;next(2);break;
     case 2:c.pending=0x80037b5c;if(!s.get || !s.get(s.user,pose,d.word(d.word(0x198)+64*c.index+4),c.image))return false;next(c.ci?3:5);break;
     case 3:if(!send(0x802b78d4))return false;next(4);break;
@@ -91,11 +105,18 @@ bool resumeAnimationTexture(const BattlePose& pose,uint32_t draw,const Animation
         if(c.j>=c.slots){c.active=false;c.pending=0;return true;}
         c.slot=d.word(c.draw+0x10+4*(c.slots-c.j-1));c.pending=0x8003dcfc;if(c.slot>=d.word(0x12c))return false;
         std::array<float,5> t;
+        // A selected source-backed transform failure must HOLD. Raw MODEL base
+        // fallback is only for legacy packages without live surface storage;
+        // PMANIM3's absent surfaces require identity/no-shift conversion proof.
         if(pose.sourceBuffers || !pose.shape.surfaces.empty()){const auto transform=animationOutputTransform(pose,c.slot);if(!transform)return false;t=*transform;}
         else for(unsigned i=0;i<5;++i)t[i]=d.real(d.word(0x190)+24*c.slot+4+4*i);
         c.step=c.count=c.mask=0;c.matrixQueued=false;
         auto op=[&](uint32_t fn,unsigned target,unsigned left=0,unsigned right=0){auto& r=c.operations[c.count++];r={};r.function=fn;r.target=target;r.left=left;r.right=right;};
         auto trans=[&](unsigned target,std::array<float,3> xyz){op(0x8029e230,target);c.operations[c.count-1].xyz=xyz;};
+        // Five T24 lanes are tx,ty,sx,sy,angle. Rotation is negative degrees
+        // about(.5,.5);the original sy!=0 translation gate can request an identity
+        // translation. Keep (1-ty)-sy rounding and rotation*translation*scale.
+        // Local matrices0/1/2 are components;3/4/5 scratch,6 final concat.
         if(t[4]!=0){trans(3,{.5f,.5f,0});op(0x8029dff0,4);c.operations[c.count-1].radians=(-t[4])*.01745329238474369f;op(0x8029dd64,5,3,4);trans(3,{-.5f,-.5f,0});op(0x8029dd64,0,5,3);c.mask|=1;}
         if(t[0]!=0 || t[1]!=0 || t[3]!=0){trans(1,{t[0],(1-t[1])-t[3],0});c.mask|=2;}
         if(t[2]!=1 || t[3]!=1){op(0x8029e2b0,2);c.operations[c.count-1].xyz={t[2],t[3],1};c.mask|=4;}

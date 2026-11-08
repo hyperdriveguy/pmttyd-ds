@@ -13,6 +13,8 @@ struct AnimationDrawGroup {int32_t sibling=-1,child=-1,shape=-1;uint32_t visibil
 class AnimationDrawResource {
 public:
     static std::shared_ptr<const AnimationDrawResource> load(const char*);
+    // read is destructive on failure;do not keep using a failed mutable owner.
+    // load publishes a shared immutable resource only after complete admission.
     bool read(FILE*);
     uint32_t word(uint32_t offset) const;
     float real(uint32_t offset) const;

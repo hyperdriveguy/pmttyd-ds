@@ -255,3 +255,7 @@ indexed-fan FIFO emission.
 [Animation startup and publication](animation-startup-publication.md) explains
 cold initialization/adoption, shared async preload/completion and atomic native
 mesh publication.
+
+[Typed animation resources](animation-typed-resources.md) explains serialized
+MODEL/TPL admission, wrap/coordinate requests, converted atlas identity and
+the typed traversal's narrower ownership domain.

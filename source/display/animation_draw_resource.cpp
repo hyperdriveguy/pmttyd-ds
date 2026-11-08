@@ -2,6 +2,9 @@
 #include <cstring>
 #include <cassert>
 namespace ttyd {
+// Header/table access assumes successful import admission. word is an asserted
+// complete 4-byte read;span divides the remaining extent to avoid count*stride
+// overflow. None of these file offsets are relocated source VM addresses.
 uint32_t AnimationDrawResource::word(uint32_t o) const{
     assert(span(o,1,4));uint32_t v;std::memcpy(&v,data_.data()+o,4);
 #if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
@@ -50,6 +53,8 @@ bool AnimationDrawResource::read(FILE* f){
     // unused streams contain0xffbc8fc0). No index is read when count is zero.
     // Selected streams/runs still pass the per-draw bounds checks below.
     for(unsigned k=0;k<8;++k){const auto count=word(0x108+4*k);if(count && !span(word(0x16c+4*k),count,4))return false;}
+    // Nonempty directory/group domain and 65536-group ceiling are native
+    // importer policy. Each group needs 24 node floats even for Joint's subset.
     if(!groups() || groups()>65536 || !word(0x148))return false;
     const auto validGroup=[&](int32_t i){return i==-1 || (i>=0 && uint32_t(i)<groups());};
     for(uint32_t i=0;i<groups();++i){const auto g=group(i);
@@ -82,6 +87,9 @@ bool AnimationDrawResource::read(FILE* f){
         for(uint32_t v=0;v<count;++v)if(uint64_t(word(word(pointerField)+uint32_t(4*(begin+v)))&0xffff)+base>=whole)return false;
         return true;
     };
+    // Per-run index admission consumes LOW16 before adding shape bases.
+    // Cull index0..3 and up to 8 UV slots/selectors bound THIS typed adapter;
+    // the raw VM renderer preserves source accesses/frontiers independently.
     for(uint32_t shape=0;shape<word(0xe8);++shape){const auto h=word(0x14c)+168*shape;if(word(h+0xa4)>3)return false;
         for(uint32_t i=0;i<word(h+0x9c);++i){const auto d=word(0x19c)+108*(word(h+0x98)+i),slots=word(d);if(slots>8)return false;
             for(uint32_t run=0;run<word(d+0x3c);++run){const auto r=word(0x150)+8*(word(d+0x38)+run),first=word(r),count=word(r+4)&0xffff;

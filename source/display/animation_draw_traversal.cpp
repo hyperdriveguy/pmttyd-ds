@@ -4,6 +4,9 @@ namespace ttyd {
 // Iterative source group recursion keeps both matrix and call-frame stacks
 // across holds. Start at last group; an invisible group skips its node/child
 // work but still follows its sibling. Parent token is retained explicitly.
+// Typed/copy-based traversal,distinct from actual-VM resumeAnimationGroup.
+// Context is captured once;only handle is compared on resume. Caller keeps
+// resource,pass,providers,pool generations and copied matrix lifetime stable.
 bool resumeAnimationDrawTraversal(BattlePosePool& pool,const BattlePoseInnerContext& input,const AnimationDrawTraversalServices& s,AnimationDrawTraversalCursor& c){
     if(!c.active){
         if(!input.resource || !input.resource->draw)return false;
@@ -24,6 +27,9 @@ bool resumeAnimationDrawTraversal(BattlePosePool& pool,const BattlePoseInnerCont
             f.phase=*visible?1:9;}break;
         case 1:{
             std::array<float,24> node{};std::array<float,3> parent{1,1,1};
+            // Typed adapter snapshots 24 floats before node SDK planning. The
+            // raw source node controller instead retains interleaved 12/21 reads;
+            // do not infer original VM read order from this convenience path.
             if(!f.node.active){
             for(unsigned i=0;i<24;++i){const auto value=animationOutputNode(*pose,f.captured.node+i);if(!value){c.pending=0x8003c4bc;return false;}node[i]=*value;}
             if(f.captured.joint && f.parent!=-1){const auto p=resource.group(uint32_t(f.parent));if(p.joint){for(unsigned i=0;i<3;++i){const auto value=animationOutputNode(*pose,p.node+3+i);if(!value){c.pending=0x8003c4bc;return false;}parent[i]=*value;}}}
@@ -47,6 +53,9 @@ bool resumeAnimationDrawTraversal(BattlePosePool& pool,const BattlePoseInnerCont
         case 4:
             // The special matched-group pointer/effect path owns its own
             // material/Vivian graph. No default unmatched-group assumption.
+            // Any flag20 currently holds this typed route,even if a raw source
+            // matched-group test could be false. Only actual-VM group owns the
+            // complete material/Vivian branch;absence cannot imply unmatched.
             if(pose->word(0)&0x20){c.pending=0x8003c4bc;return false;}
             f.callback=pose->word(0x154);f.callbackData=pose->word(0x158);f.callbackLevel=uint32_t(c.stack.size()-1);f.phase=5;break;
         case 5:
@@ -57,6 +66,8 @@ bool resumeAnimationDrawTraversal(BattlePosePool& pool,const BattlePoseInnerCont
         // child returns. Sibling continuation then runs with the restored stack.
         case 7:{const auto child=f.captured.child,parent=f.group;f.phase=8;if(child!=-1){AnimationDrawFrame next;next.group=child;next.parent=parent;c.frames.push_back(std::move(next));}break;}
         case 8:if(c.stack.size()<2){c.pending=0x8003c4bc;return false;}c.stack.pop_back();f.phase=9;break;
+        // Sibling receives CURRENT group as parent,even for invisible nodes.
+        // Reuse frame but restore composed stack before following the sibling.
         case 9:{const auto sibling=f.captured.sibling,parent=f.group;if(sibling==-1)c.frames.pop_back();else {f=AnimationDrawFrame{};f.group=sibling;f.parent=parent;}break;}
         default:c.pending=0x8003c4bc;return false;
         }
