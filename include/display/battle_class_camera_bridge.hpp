@@ -7,6 +7,7 @@
 #include <memory>
 namespace ttyd {
 // Native ownership/publication identity, never an original guest pointer.
+// Nonzero allocation generation and successful native producer pass, not time.
 struct BattleClassCameraEpoch {uint64_t generation=0,pass=0;};
 struct BattleClassCameraAddressPolicy {
   uint32_t base=0;
@@ -54,6 +55,7 @@ private:
       std::function<bool(BattleClassCameraEpoch)>,uint32_t callback);
   BattleScreenPointServices screenServices() const;
   std::optional<BattleScreenPoint> screenPointCopied(const BattleScreenPoint&) const;
+  // Default original class queued callback; friend wrappers select HP/weapon.
   uint32_t callback_=0x8012210c;
   uint64_t queueEpoch_=0;
   std::shared_ptr<const CameraManager> bank_;
@@ -66,6 +68,7 @@ private:
   const CameraMainCursor* main_=nullptr;
   const CameraDrawCursor* draw_=nullptr;
   const DisplayQueue* queue_=nullptr;
+  // Slot0 holds Camera4, slot1 Camera8; these are copies, not synthesized views.
   std::array<CameraDepthSnapshot,2> snapshots_{};
   std::array<float,2> yaw_{};
   mutable bool invalid_=false;

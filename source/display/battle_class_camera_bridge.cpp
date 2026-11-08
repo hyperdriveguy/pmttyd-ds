@@ -3,6 +3,9 @@
 #include <cstring>
 namespace ttyd {
 namespace {
+// Native virtual reservation: thirteen camera slots, 0x400 bytes each. This
+// stride is adapter policy, not a recovered original Camera struct size. Fixed
+// source callbacks are class8012210c, HP8011fde0 and weapon80121ce8 below.
 constexpr uint32_t Stride=0x400,Bytes=13*Stride,ClassCallback=0x8012210c,HpCallback=0x8011fde0;
 bool same(BattleClassCameraEpoch a,BattleClassCameraEpoch b){return a.generation==b.generation && a.pass==b.pass;}
 uint32_t bits(float f){uint32_t n;std::memcpy(&n,&f,4);return n;}
@@ -33,6 +36,10 @@ bool BattleClassCameraBridge::bindCallback(std::shared_ptr<const CameraManager> 
   callback_=callback;bank_=std::move(bank);generation_=generation;actors_=actors;
   addresses_=std::move(addresses);current_=std::move(current);return true;
 }
+// Main index13/inactive means the thirteen-camera producer finished. Draw
+// stage8/index8 must be inside the actual Camera8 queue invocation, with both
+// retained dispatcher and current queue record matching callback/userdata.
+// resetEpoch prevents reset/repopulation from reviving a borrowed invocation.
 bool BattleClassCameraBridge::dispatchCurrent() const {
   if(!bank_ || !main_ || !draw_ || !queue_ || !queueEpoch_ || queue_->resetEpoch()!=queueEpoch_ || main_->active || main_->index!=13 ||
       !draw_->active || draw_->stage!=8 || draw_->index!=8 || bank_->currentIndex()!=8)return false;
@@ -43,10 +50,13 @@ bool BattleClassCameraBridge::dispatchCurrent() const {
 bool BattleClassCameraBridge::begin(BattleClassCameraEpoch epoch,
     const CameraMainCursor& main,const CameraDrawCursor& draw,const DisplayQueue& queue,uint32_t battle){
   if(!bank_ || invalid_ || !epoch.pass || epoch.generation!=generation_)return false;
+  // A held pass pins cursor/queue object identities and battle userdata.
   if(held_)return same(epoch_,epoch) && main_==&main && draw_==&draw && queue_==&queue && battle_==battle && available();
   if(epoch.pass<=lastPass_ || !current_(epoch) || !addresses_.unmapped(addresses_.base,Bytes))return false;
   epoch_=epoch;main_=&main;draw_=&draw;queue_=&queue;queueEpoch_=queue.resetEpoch();battle_=battle;
   if(!dispatchCurrent()){main_=nullptr;draw_=nullptr;queue_=nullptr;return false;}
+  // Only world Camera4 and UI Camera8 are exposed; copy actual published
+  // view/projection/yaw once, then compare their bits at every provider boundary.
   for(unsigned i=0;i<2;++i){
     const auto* c=bank_->camera(i?8:4);
     if(!c || !c->viewPublished || !finite(c->matrices) || !std::isfinite(c->yaw)){
@@ -56,6 +66,8 @@ bool BattleClassCameraBridge::begin(BattleClassCameraEpoch epoch,
   }
   held_=true;lastPass_=epoch.pass;return available();
 }
+// Loss while held is sticky even if old numeric values are later restored.
+// The whole token range must still be genuinely unmapped, including file caches.
 bool BattleClassCameraBridge::available() const {
   if(!held_ || invalid_)return false;
   if(!current_(epoch_) || !addresses_.unmapped(addresses_.base,Bytes) || !dispatchCurrent()){
@@ -69,6 +81,8 @@ bool BattleClassCameraBridge::available() const {
   }
   return true;
 }
+// Finish the short camera lease only after whole source completion, before
+// Draw advances. Long copied publication proofs must not depend on this lease.
 bool BattleClassCameraBridge::finish(BattleClassCameraEpoch epoch){
   if(!held_ || !same(epoch,epoch_) || !available())return false;
   held_=false;main_=nullptr;draw_=nullptr;queue_=nullptr;return true;
@@ -77,6 +91,8 @@ void BattleClassCameraBridge::retire(){
   bank_.reset();actors_={};addresses_={};current_={};generation_=lastPass_=0;
   epoch_={};battle_=0;callback_=ClassCallback;queueEpoch_=0;main_=nullptr;draw_=nullptr;queue_=nullptr;held_=invalid_=false;
 }
+// Reservation ownership survives unavailability; composed readers must never
+// fall through inside it. retire() is the explicit metadata-only range release.
 bool BattleClassCameraBridge::owns(uint32_t a) const {
   return bank_ && a>=addresses_.base && uint64_t(a)-addresses_.base<Bytes;
 }
@@ -91,6 +107,8 @@ std::optional<uint32_t> BattleClassCameraBridge::word(uint32_t a) const {
   const uint32_t index=(a-addresses_.base)/Stride,offset=(a-addresses_.base)%Stride;
   if((index!=4 && index!=8) || offset%4)return {};
   const unsigned i=index==8;
+  // Original field offsets: yaw +0x114; affine view +0x11c..0x14b
+  // (12 words, 3x4); projection +0x15c..0x19b (16 words, 4x4).
   if(offset==0x114)return bits(yaw_[i]);
   if(offset>=0x11c && offset<0x14c){const unsigned n=(offset-0x11c)/4;return bits(snapshots_[i].view[n/4][n%4]);}
   if(offset>=0x15c && offset<0x19c){const unsigned n=(offset-0x15c)/4;return bits(snapshots_[i].projection[n/4][n%4]);}
@@ -106,6 +124,8 @@ bool BattleClassCameraBridge::transform(uint32_t address,const BattleScreenPoint
   }
   return false;
 }
+// Reuse the original ScreenPoint/ring helpers with finite native SDK math.
+// Source positions stay in source units; this supplies no fixture scale/lens.
 BattleScreenPointServices BattleClassCameraBridge::screenServices() const {
   BattleScreenPointServices s;s.memory=actors_.memory;s.user=const_cast<BattleClassCameraBridge*>(this);
   s.camera=[](void* u,uint32_t id){return static_cast<BattleClassCameraBridge*>(u)->camera(id);};
@@ -130,6 +150,8 @@ std::optional<std::array<float,3>> BattleClassCameraBridge::ringCenter() const {
 std::optional<std::array<float,2>> BattleClassCameraBridge::ringOffset(float angle) const {
   if(!available() || !std::isfinite(angle))return {};
   BattleActRingPositionServices s;s.memory=actors_;
+  // Host/native libm is an admitted finite numeric policy, not measured PPC
+  // libm/FPSCR parity. Original ring helper owns angle conversion/constants.
   s.cosine=[](void*,double a)->std::optional<double>{return std::isfinite(a)?std::optional<double>(std::cos(a)):std::nullopt;};
   s.sine=[](void*,double a)->std::optional<double>{return std::isfinite(a)?std::optional<double>(std::sin(a)):std::nullopt;};
   std::array<float,2> out;

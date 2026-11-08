@@ -28,6 +28,7 @@ private:
   BattleActorServices actors_;
   const BattleClassNativeNumericFooters footers_;
   uint32_t base_=0,capturedCamera_=0;
+  // Raw binary32 words of the admitted 3x4 view (48 bytes); no host pointer alias.
   std::array<uint32_t,12> view_{};
   bool captured_=false;
   std::function<std::optional<uint32_t>(uint32_t)> sourceWord_;

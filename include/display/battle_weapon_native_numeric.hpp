@@ -21,6 +21,8 @@ public:
  std::optional<BattleActMatrix>identity()const;
 private:
  BattleWeaponNativeFrame&frame_;BattleActorServices actors_;uint32_t base_=0,captured_=0;
+ // Complete captured Camera8 affine view bits; optional public queries remain
+ // separate from asserted-domain total raster reads that abort on misuse.
  std::array<uint32_t,12>view_{};bool hasView_=false;
  std::function<std::optional<uint32_t>(uint32_t)>sourceWord_;
  std::function<bool()>sourceCurrent_;

@@ -291,3 +291,7 @@ nine-quad replay.
 [HP/submenu renderer bridges](hp-submenu-renderer.md) explains capture scope,
 allocation tokens, source-ordered replay, projection-only HP state and native
 preparation/release ordering.
+
+[Battle camera/numeric adapters](battle-camera-numeric.md) explains virtual camera
+reservations, exact queued-epoch admission, captured total-reader domains and
+finite conversion/SDK policies.
